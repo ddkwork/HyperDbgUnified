@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.28)
 
-include(d:/ewdk/ewdk.cmake)
+include("C:/Program Files/CMake/bin/ewdk.cmake")
 
 project(HyperDbgUnified C CXX ASM_MASM)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
@@ -311,8 +311,8 @@ target_link_libraries(hyperdbg-cli
     keystone
 )
 target_link_directories(hyperdbg-cli PRIVATE
-    "HyperDbg/hyperdbg/libraries/keystone/release-lib"
-    "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>"
+    "HyperDbg/hyperdbg/libraries/keystone/debug-lib"
+    "${CMAKE_CURRENT_BINARY_DIR}"
 )
 
 add_custom_command(TARGET hyperdbg-cli PRE_LINK
