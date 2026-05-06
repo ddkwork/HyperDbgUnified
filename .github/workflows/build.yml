@@ -1,4 +1,4 @@
-name: HyperDbg Source Snapshot
+name: HyperDbg Build
 
 on:
   push:
@@ -14,8 +14,8 @@ on:
     - cron: '0 */6 * * *'
 
 jobs:
-  snapshot:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: windows-latest
     permissions:
       contents: write
 
@@ -23,12 +23,8 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v6
 
-    - name: Install zstd
-      run: sudo apt-get update && sudo apt-get install -y zstd
-
     - name: Clone HyperDbg repository
       run: |
-        rm -rf HyperDbg
         git clone --recursive -b dev https://github.com/HyperDbg/HyperDbg.git HyperDbg
 
     - name: Get HyperDbg commit info
@@ -38,11 +34,75 @@ jobs:
         echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
         echo "date=$(git log -1 --format=%cd --date=short)" >> $GITHUB_OUTPUT
 
-    - name: Create archive
+    - name: Setup MSVC Developer Command Prompt
+      uses: ilammy/msvc-dev-cmd@v1
+      with:
+        arch: x64
+
+    - name: Install CMake and Ninja
+      uses: lukka/get-cmake@latest
+
+    - name: Configure CMake (Release)
       run: |
-        set -o pipefail
-        tar -cf - HyperDbg | zstd -T0 -19 -o HyperDbg.tar.zst
-        ls -lh HyperDbg.tar.zst
+        cmake -B build -G "Ninja" -DCMAKE_BUILD_TYPE=Release .
+
+    - name: Build Release
+      run: |
+        cmake --build build --config Release
+
+    - name: Configure CMake (Debug)
+      run: |
+        cmake -B build_debug -G "Ninja" -DCMAKE_BUILD_TYPE=Debug .
+
+    - name: Build Debug
+      run: |
+        cmake --build build_debug --config Debug
+
+    - name: Collect build artifacts
+      run: |
+        mkdir artifacts
+        # 收集 Release 版本
+        Get-ChildItem -Path build -Recurse -Include *.sys,*.pdb,*.dll,*.exe | Copy-Item -Destination artifacts
+        # 收集 Debug 版本
+        Get-ChildItem -Path build_debug -Recurse -Include *.sys,*.pdb,*.dll,*.exe | Copy-Item -Destination artifacts
+
+    - name: Upload build artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: HyperDbg-Build
+        path: artifacts/*
+
+    - name: Create source archive
+      run: |
+        7z a -tzip HyperDbg-Source.zip HyperDbg\
+
+    - name: Upload source archive
+      uses: actions/upload-artifact@v4
+      with:
+        name: HyperDbg-Source
+        path: HyperDbg-Source.zip
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v6
+
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+
+    - name: Display structure of downloaded files
+      run: ls -R
+
+    - name: Get commit info
+      id: info
+      run: |
+        echo "date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
+        echo "commit=$(git rev-parse HEAD)" >> $GITHUB_OUTPUT
 
     - name: Delete existing release
       uses: dev-drprasad/delete-older-releases@v0.3.4
@@ -56,15 +116,15 @@ jobs:
       uses: softprops/action-gh-release@v3
       with:
         tag_name: latest
-        name: HyperDbg Source Snapshot - Latest
+        name: HyperDbg Build - Latest
         files: |
-          HyperDbg.tar.zst
+          HyperDbg-Source/*
+          HyperDbg-Build/*
         body: |
-          HyperDbg dev branch source code snapshot
+          HyperDbg dev branch build
 
-          Snapshot Date: ${{ steps.hyperdbg_info.outputs.date }}
-          HyperDbg Commit: ${{ steps.hyperdbg_info.outputs.commit }}
-          Unified Repo Commit: ${{ github.sha }}
+          Build Date: ${{ steps.info.outputs.date }}
+          Unified Repo Commit: ${{ steps.info.outputs.commit }}
 
           Automatically updated with each successful run.
         draft: false
