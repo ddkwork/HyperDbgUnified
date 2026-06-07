@@ -115,9 +115,13 @@ target_include_directories(Platform PRIVATE
     "HyperDbg/hyperdbg/include/platform/kernel/code"
     "HyperDbg/hyperdbg/include/platform/kernel/header"
     "HyperDbg/hyperdbg/include"
+    "HyperDbg/hyperdbg/hyperhv"
+    "HyperDbg/hyperdbg/hyperhv/header"
+    "HyperDbg/hyperdbg/hyperhv/code"
 )
-target_compile_definitions(Platform PRIVATE NTDDI_VERSION=0x0A000008)
-target_compile_options(Platform PRIVATE /Od /Zi /RTC1 /FIntddk.h /FIntstrsafe.h /FISDK/headers/Constants.h)
+target_compile_definitions(Platform PRIVATE HYPERDBG_KERNEL_MODE SCRIPT_ENGINE_KERNEL_MODE HYPERDBG_VMM DHYPERDBG_VMM HYPERDBG_HYPEREVADE HYPERDBG_HYPER_LOG HYPERDBG_HYPERTRACE NTDDI_VERSION=0x0A000008)
+target_compile_options(Platform PRIVATE /Od /Zi /RTC1)
+target_precompile_headers(Platform PRIVATE "HyperDbg/hyperdbg/hyperhv/pch.h")
 
 km_sys(hyperkd
     KMDF 1.15
@@ -187,15 +191,16 @@ target_precompile_headers(SymbolParser PRIVATE "HyperDbg/hyperdbg/symbol-parser/
 target_link_libraries(SymbolParser Pdbex)
 
 file(GLOB ScriptEngineSourceFiles "HyperDbg/hyperdbg/script-engine/code/*.c")
-list(APPEND ScriptEngineSourceFiles "HyperDbg/hyperdbg/script-engine/script_include.c")
+list(APPEND ScriptEngineSourceFiles "HyperDbg/hyperdbg/script-engine/code/script_include.c")
 
-um_lib(ScriptEngine ${ScriptEngineSourceFiles})
+um_lib(ScriptEngine ${ScriptEngineSourceFiles} "HyperDbg/hyperdbg/include/platform/user/code/platform-lib-calls.c")
 target_include_directories(ScriptEngine PRIVATE
     "HyperDbg/hyperdbg/script-engine"
     "HyperDbg/hyperdbg/script-engine/header"
     "HyperDbg/hyperdbg/script-engine/code"
     "HyperDbg/hyperdbg/include"
     "HyperDbg/hyperdbg/script-eval"
+    "HyperDbg/hyperdbg/include/platform/user/header"
 )
 target_compile_definitions(ScriptEngine PRIVATE SCRIPTENGINE_EXPORTS HYPERDBG_SCRIPT_ENGINE HYPERDBG_SYMBOL_PARSER _CRT_SECURE_NO_WARNINGS)
 target_compile_options(ScriptEngine PRIVATE /Od /Zi)
@@ -245,12 +250,25 @@ target_precompile_headers(ScriptEvalUser PRIVATE "HyperDbg/hyperdbg/libhyperdbg/
 um_lib(Libhyperdbg
     ${LibhyperdbgSourceFiles}
     ${LibhyperdbgAsmFiles}
+    "HyperDbg/hyperdbg/include/components/pe/code/pe-image-reader.cpp"
+    "HyperDbg/hyperdbg/include/platform/user/code/platform-intrinsics.c"
+    "HyperDbg/hyperdbg/include/platform/user/code/windows-only/windows-privilege.c"
 )
+set_source_files_properties(
+    "HyperDbg/hyperdbg/include/platform/user/code/platform-intrinsics.c"
+    "HyperDbg/hyperdbg/include/platform/user/code/windows-only/windows-privilege.c"
+    PROPERTIES LANGUAGE CXX
+)
+
 target_include_directories(Libhyperdbg PRIVATE
     "HyperDbg/hyperdbg/libhyperdbg"
     "HyperDbg/hyperdbg/libhyperdbg/header"
     "HyperDbg/hyperdbg/libhyperdbg/code"
     "HyperDbg/hyperdbg/include"
+    "HyperDbg/hyperdbg/include/components/pe/header"
+    "HyperDbg/hyperdbg/include/components/pe/code"
+    "HyperDbg/hyperdbg/include/platform/user/header"
+    "HyperDbg/hyperdbg/include/platform/user/header/windows-only"
     "HyperDbg/hyperdbg/dependencies"
     "HyperDbg/hyperdbg/dependencies/phnt"
     "HyperDbg/hyperdbg/dependencies/zydis/include"
