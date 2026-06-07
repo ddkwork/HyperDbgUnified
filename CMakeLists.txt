@@ -338,3 +338,71 @@ add_custom_command(TARGET hyperdbg-cli PRE_LINK
         "${CMAKE_CURRENT_BINARY_DIR}/Zydis.lib"
         "${CMAKE_CURRENT_BINARY_DIR}/Zycore.lib"
 )
+
+# ============================================================
+# EPT Hook Demo
+# ============================================================
+
+um_exe(epthook-demo "epthook-demo.cpp")
+target_include_directories(epthook-demo PRIVATE
+    "HyperDbg/hyperdbg/include"
+    "HyperDbg/hyperdbg/dependencies"
+)
+target_compile_definitions(epthook-demo PRIVATE
+    HYPERDBG_LIBHYPERDBG
+    HYPERDBG_SCRIPT_ENGINE
+    HYPERDBG_SYMBOL_PARSER
+    _CRT_SECURE_NO_WARNINGS
+)
+target_compile_options(epthook-demo PRIVATE /Od /Zi)
+target_link_options(epthook-demo PRIVATE /DEBUG /FORCE:MULTIPLE
+    /ALTERNATENAME:__imp_pdbex_export=pdbex_export
+    /ALTERNATENAME:__imp_pdbex_set_logging_method_export=pdbex_set_logging_method_export
+)
+target_link_libraries(epthook-demo
+    Libhyperdbg
+    dbghelp
+    urlmon
+    shell32
+    ole32
+    oleaut32
+    keystone
+)
+target_link_directories(epthook-demo PRIVATE
+    "HyperDbg/hyperdbg/libraries/keystone/debug-lib"
+    "${CMAKE_CURRENT_BINARY_DIR}"
+)
+
+# ============================================================
+# Debug Demo (VMI local mode notepad debugger)
+# ============================================================
+
+um_exe(debug-demo "debug-demo.cpp")
+target_include_directories(debug-demo PRIVATE
+    "HyperDbg/hyperdbg/include"
+    "HyperDbg/hyperdbg/dependencies"
+)
+target_compile_definitions(debug-demo PRIVATE
+    HYPERDBG_LIBHYPERDBG
+    HYPERDBG_SCRIPT_ENGINE
+    HYPERDBG_SYMBOL_PARSER
+    _CRT_SECURE_NO_WARNINGS
+)
+target_compile_options(debug-demo PRIVATE /Od /Zi)
+target_link_options(debug-demo PRIVATE /DEBUG /FORCE:MULTIPLE
+    /ALTERNATENAME:__imp_pdbex_export=pdbex_export
+    /ALTERNATENAME:__imp_pdbex_set_logging_method_export=pdbex_set_logging_method_export
+)
+target_link_libraries(debug-demo
+    Libhyperdbg
+    dbghelp
+    urlmon
+    shell32
+    ole32
+    oleaut32
+    keystone
+)
+target_link_directories(debug-demo PRIVATE
+    "HyperDbg/hyperdbg/libraries/keystone/debug-lib"
+    "${CMAKE_CURRENT_BINARY_DIR}"
+)
