@@ -26,6 +26,7 @@
  */
 
 #include <Windows.h>
+#include <TlHelp32.h>
 #include <cstdio>
 #include <cstring>
 
@@ -48,6 +49,45 @@
 #define MAX_CALLSTACK_DEPTH 32
 
 static volatile BOOL g_Running = TRUE;
+static UINT32        g_DebuggeePid = 0;  // 被调试进程的 PID
+
+// ============================================================
+// 进程查找 - 获取被调试进程的 PID
+// ============================================================
+
+/**
+ * @brief 按进程名查找 PID
+ *
+ * HyperDbg 的 hyperdbg_u_start_process 不返回 PID，
+ * 而 hyperdbg_u_read_memory 需要 PID 才能读取目标进程内存
+ * (pid=0 会导致 PsLookupProcessByProcessId 失败)
+ * 所以用 CreateToolhelp32Snapshot 查找
+ */
+UINT32
+FindProcessByName(const WCHAR * processName)
+{
+    HANDLE hSnapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
+    if (hSnapshot == INVALID_HANDLE_VALUE)
+        return 0;
+
+    PROCESSENTRY32W pe = {0};
+    pe.dwSize = sizeof(pe);
+
+    if (Process32FirstW(hSnapshot, &pe))
+    {
+        do
+        {
+            if (_wcsicmp(pe.szExeFile, processName) == 0)
+            {
+                CloseHandle(hSnapshot);
+                return pe.th32ProcessID;
+            }
+        } while (Process32NextW(hSnapshot, &pe));
+    }
+
+    CloseHandle(hSnapshot);
+    return 0;
+}
 
 // ============================================================
 // 数据结构 - GUI 可以直接使用这些结构体
@@ -155,7 +195,7 @@ GetStackSnapshot()
         snap.RspBase,
         DEBUGGER_READ_VIRTUAL_ADDRESS,
         READ_FROM_KERNEL,
-        0,  // current process
+        g_DebuggeePid,
         STACK_READ_SIZE,
         TRUE,
         &addrMode,
@@ -185,11 +225,12 @@ BOOL
 ReadMemory(UINT64 address, UINT32 pid, BYTE * buffer, UINT32 size, UINT32 * bytesRead)
 {
     DEBUGGER_READ_MEMORY_ADDRESS_MODE addrMode = DEBUGGER_READ_ADDRESS_MODE_64_BIT;
+    UINT32 effectivePid = (pid != 0) ? pid : g_DebuggeePid;
     return hyperdbg_u_read_memory(
         address,
         DEBUGGER_READ_VIRTUAL_ADDRESS,
         READ_FROM_KERNEL,
-        pid,
+        effectivePid,
         size,
         TRUE,
         &addrMode,
@@ -203,10 +244,11 @@ ReadMemory(UINT64 address, UINT32 pid, BYTE * buffer, UINT32 size, UINT32 * byte
 BOOL
 WriteMemory(UINT64 address, UINT32 pid, BYTE * data, UINT32 size)
 {
+    UINT32 effectivePid = (pid != 0) ? pid : g_DebuggeePid;
     return hyperdbg_u_write_memory(
         (PVOID)address,
         EDIT_VIRTUAL_MEMORY,
-        pid,
+        effectivePid,
         data,
         size);
 }
@@ -469,11 +511,13 @@ LoadHyperDbg()
     return 0;
 }
 
+// 严格按照官方示例 (examples/user/hyperdbg_app/code/hyperdbg-app.cpp) 的卸载顺序。
+// 不要在执行 events all clear！events all clear 会在 VMM 活跃时清空事件链表，
+// 导致 unload_vmm 内部访问已清理的链表，内核状态损坏。
 void
 UnloadHyperDbg()
 {
     printf("[*] Unloading...\n");
-    hyperdbg_u_run_command((CHAR *)"events all clear");
     hyperdbg_u_unload_vmm();
     hyperdbg_u_unload_kd();
     hyperdbg_u_stop_kd_driver();
@@ -505,6 +549,19 @@ DebugNotepad()
     printf("[*] Starting notepad.exe (will pause at OEP)...\n");
     hyperdbg_u_start_process(L"C:\\Windows\\system32\\notepad.exe");
     Sleep(3000);
+
+    //
+    // Step 2.1: 查找 notepad.exe 的 PID
+    // hyperdbg_u_start_process 不返回 PID，但 read_memory 需要正确的 PID
+    // pid=0 会导致内核 PsLookupProcessByProcessId(0) 失败 (c000003c)
+    //
+    g_DebuggeePid = FindProcessByName(L"notepad.exe");
+    if (g_DebuggeePid == 0)
+    {
+        printf("[-] Failed to find notepad.exe PID\n");
+        return;
+    }
+    printf("[+] Notepad PID: %u (0x%x)\n", g_DebuggeePid, g_DebuggeePid);
 
     printf("\n========================================\n");
     printf("[+] Notepad paused at OEP!\n");
@@ -546,7 +603,7 @@ void
 InteractiveMode()
 {
     printf("\n[*] Interactive mode (API only, no run_command)\n");
-    printf("Commands: regs | stack | callstack | step | stepover | go | bp <addr> | read <addr> | quit\n\n");
+    printf("Commands: regs | stack | callstack | step | stepover | go | bp <addr> | read <addr> | start <path> | pid | quit\n\n");
 
     char input[1024];
 
@@ -613,7 +670,7 @@ InteractiveMode()
             UINT64 addr = 0;
             if (sscanf(input + 3, "%llx", &addr) == 1)
             {
-                if (hyperdbg_u_set_breakpoint(addr, 0, 0, 0))
+                if (hyperdbg_u_set_breakpoint(addr, g_DebuggeePid, 0, 0))
                     printf("[+] Breakpoint set at 0x%llx\n", addr);
                 else
                     printf("[-] Set breakpoint failed\n");
@@ -653,6 +710,45 @@ InteractiveMode()
             continue;
         }
 
+        if (strncmp(input, "start ", 6) == 0)
+        {
+            char pathA[MAX_PATH] = {0};
+            if (sscanf(input + 6, "%s", pathA) == 1)
+            {
+                WCHAR pathW[MAX_PATH] = {0};
+                MultiByteToWideChar(CP_ACP, 0, pathA, -1, pathW, MAX_PATH);
+
+                hyperdbg_u_start_process(pathW);
+                Sleep(3000);
+
+                //
+                // 从路径提取文件名来查找 PID
+                //
+                const WCHAR * fileName = wcsrchr(pathW, L'\\');
+                fileName = fileName ? fileName + 1 : pathW;
+
+                g_DebuggeePid = FindProcessByName(fileName);
+                if (g_DebuggeePid != 0)
+                    printf("[+] Process started, PID: %u (0x%x)\n", g_DebuggeePid, g_DebuggeePid);
+                else
+                    printf("[-] Process started but PID not found\n");
+            }
+            else
+            {
+                printf("Usage: start <path>\n");
+            }
+            continue;
+        }
+
+        if (strcmp(input, "pid") == 0)
+        {
+            if (g_DebuggeePid != 0)
+                printf("[*] Debuggee PID: %u (0x%x)\n", g_DebuggeePid, g_DebuggeePid);
+            else
+                printf("[*] No debuggee process set (use 'start <path>')\n");
+            continue;
+        }
+
         printf("Unknown command: %s\n", input);
     }
 }
@@ -675,6 +771,8 @@ ShowUsage(const char * exe)
     printf("  go / g            - Continue (API: continue_debuggee)\n");
     printf("  bp <addr>         - Set breakpoint (API: set_breakpoint)\n");
     printf("  read <addr>       - Read memory (API: read_memory)\n");
+    printf("  start <path>      - Start process and set debuggee PID\n");
+    printf("  pid               - Show current debuggee PID\n");
     printf("  quit              - Exit\n");
     printf("\n");
     printf("Data Structures for GUI:\n");

@@ -1,0 +1,87 @@
+diff --git a/HyperDbg/hyperdbg/hyperkd/code/debugger/memory/PoolManager.c b/HyperDbg/hyperdbg/hyperkd/code/debugger/memory/PoolManager.c
+--- a/HyperDbg/hyperdbg/hyperkd/code/debugger/memory/PoolManager.c
++++ b/HyperDbg/hyperdbg/hyperkd/code/debugger/memory/PoolManager.c
+@@ -96,25 +96,19 @@ VOID
+ PoolManagerUninitialize()
+ {
+-    PLIST_ENTRY ListTemp = &g_ListOfAllocatedPoolsHead;
+-
+     //
+     // Pool manager is not initialized anymore
+     //
+     g_PoolManagerInitialized = FALSE;
+
+     SpinlockLock(&LockForReadingPool);
+
+-    while (&g_ListOfAllocatedPoolsHead != ListTemp->Flink)
++    while (!IsListEmpty(&g_ListOfAllocatedPoolsHead))
+     {
+-        ListTemp = ListTemp->Flink;
++        PLIST_ENTRY Entry = RemoveHeadList(&g_ListOfAllocatedPoolsHead);
+
+         //
+         // Get the head of the record
+         //
+-        PPOOL_TABLE PoolTable = (PPOOL_TABLE)CONTAINING_RECORD(ListTemp, POOL_TABLE, PoolsList);
++        PPOOL_TABLE PoolTable = (PPOOL_TABLE)CONTAINING_RECORD(Entry, POOL_TABLE, PoolsList);
+
+         //
+         // Free the alloocated buffer (if not already changed)
+@@ -124,12 +118,7 @@ PoolManagerUninitialize()
+             PlatformMemFreePool((PVOID)PoolTable->Address);
+         }
+
+-        //
+-        // Unlink the PoolTable
+-        //
+-        RemoveEntryList(&PoolTable->PoolsList);
+-
+         //
+         // Free the record itself
+         //
+@@ -290,8 +279,11 @@ PoolManagerAllocateAndAddToPoolTable(SIZE_T Size, UINT32 Count, POOL_ALLOCATION_
+
+         //
+-        // Add it to the list
++        // Add it to the list (lock required: other cores may access
++        // the same list via PoolManagerRequestPool / PoolManagerFreePool)
+         //
++        SpinlockLock(&LockForReadingPool);
+         InsertHeadList(&g_ListOfAllocatedPoolsHead, &(SinglePool->PoolsList));
++        SpinlockUnlock(&LockForReadingPool);
+     }
+
+     return TRUE;
+@@ -345,17 +347,15 @@ PoolManagerCheckAndPerformAllocationAndDeallocation()
+     //
+     if (g_IsNewRequestForDeAllocation)
+     {
+-        ListTemp = &g_ListOfAllocatedPoolsHead;
+-
+         SpinlockLock(&LockForReadingPool);
+
+-        while (&g_ListOfAllocatedPoolsHead != ListTemp->Flink)
++        PLIST_ENTRY ListEntry = g_ListOfAllocatedPoolsHead.Flink;
++
++        while (ListEntry != &g_ListOfAllocatedPoolsHead)
+         {
+-            ListTemp = ListTemp->Flink;
+-
+             //
+             // Get the head of the record
+             //
+-            PPOOL_TABLE PoolTable = (PPOOL_TABLE)CONTAINING_RECORD(ListTemp, POOL_TABLE, PoolsList);
++            PPOOL_TABLE PoolTable = (PPOOL_TABLE)CONTAINING_RECORD(ListEntry, POOL_TABLE, PoolsList);
+
+             //
+-            // Check whether this pool should be freed or not and
+@@ -363,6 +363,11 @@ PoolManagerCheckAndPerformAllocationAndDeallocation()
+             //
++            // Advance to next entry before potentially removing current
++            //
++            ListEntry = ListEntry->Flink;
++
++            //
+             if (PoolTable->ShouldBeFreed && !PoolTable->AlreadyFreed)
+             {
+                 //

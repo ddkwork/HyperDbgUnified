@@ -1,0 +1,1 @@
+& "C:\Program Files\WindowsApps\Microsoft.WinDbg_1.2601.12001.0_x64__8wekyb3d8bbwe\amd64\kd.exe" -z "D:\DUMP0c63.dmp" -y "d:\ux\examples\hypedbg\HyperDbgUnified\build" -i "d:\ux\examples\hypedbg\HyperDbgUnified\build" -srcpath "d:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg" -lines -c ".reload /f hyperkd.sys=fffff805bb280000;u hyperkd+0x3b6d0;q"

@@ -2,6 +2,14 @@ cmake_minimum_required(VERSION 3.28)
 
 include("C:/Program Files/CMake/bin/ewdk.cmake")
 
+# Generator-expression-wrapped KM compile flags for targets with .asm files.
+# Prevents C-only flags (/GF, /GR-, /Gz, /kernel, /FI, /Oi) from being
+# passed to MASM, which would cause A4018 warnings.
+set(_KM_CXX_FLAGS "")
+foreach(_flag /Zp8 /GF /GR- /Gz /kernel "/FIwarning.h" "/FI${KM_ADDITIONAL_FLAGS_FILE}" /Oi)
+    list(APPEND _KM_CXX_FLAGS "$<$<COMPILE_LANGUAGE:C,CXX>:${_flag}>")
+endforeach()
+
 project(HyperDbgUnified C CXX ASM_MASM)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
@@ -10,14 +18,19 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 set(WDK_NTDDI_VERSION "0x0A000008")
 
-set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
-set(CMAKE_C_FLAGS_DEBUG "/Od /Zi /RTC1")
-set(CMAKE_C_FLAGS "/Od /Zi /RTC1")
-set(CMAKE_CXX_FLAGS_DEBUG "/Od /Zi /RTC1")
-set(CMAKE_CXX_FLAGS "/Od /Zi /RTC1")
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type" FORCE)
+set(CMAKE_C_FLAGS_RELEASE "/Zi")
+set(CMAKE_CXX_FLAGS_RELEASE "/Zi")
+
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(CMAKE_C_USE_RESPONSE_FILE_FOR_OBJECTS 1)
+set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_OBJECTS 1)
+set(CMAKE_C_USE_RESPONSE_FILE_FOR_INCLUDES 1)
+set(CMAKE_CXX_USE_RESPONSE_FILE_FOR_INCLUDES 1)
 
 include_directories(
     "."
@@ -41,14 +54,11 @@ file(GLOB_RECURSE HyperkdSourceFiles "HyperDbg/hyperdbg/hyperkd/code/*.c")
 file(GLOB HyperkdAsmFiles "HyperDbg/hyperdbg/hyperkd/code/assembly/*.asm")
 
 file(GLOB_RECURSE HyperhvSourceFiles "HyperDbg/hyperdbg/hyperhv/code/*.c")
-list(FILTER HyperhvSourceFiles EXCLUDE REGEX ".*code/common/UnloadDll\\.c$")
 file(GLOB HyperhvAsmFiles "HyperDbg/hyperdbg/hyperhv/code/assembly/*.asm")
 
 file(GLOB HyperlogSourceFiles "HyperDbg/hyperdbg/hyperlog/code/*.c")
 
 file(GLOB KdserialSourceFiles "HyperDbg/hyperdbg/kdserial/*.c")
-
-file(GLOB ScriptEvalSourceFiles "HyperDbg/hyperdbg/script-eval/code/*.c")
 
 file(GLOB HyperevadeSourceFiles "HyperDbg/hyperdbg/hyperevade/code/*.c")
 
@@ -63,6 +73,8 @@ target_compile_definitions(zydis_kernel PRIVATE ZYAN_NO_LIBC ZYDIS_NO_LIBC)
 target_compile_options(zydis_kernel PRIVATE /Od /Zi /RTC1)
 
 km_lib(Hyperhv ${HyperhvSourceFiles} ${HyperhvAsmFiles} ${IncludeOptimizationsSourceFiles} ${IncludeSpinlockSourceFiles})
+# Override COMPILE_OPTIONS with generator expressions (has .asm files)
+set_target_properties(Hyperhv PROPERTIES COMPILE_OPTIONS "${_KM_CXX_FLAGS}")
 target_include_directories(Hyperhv PRIVATE
     "HyperDbg/hyperdbg/hyperhv"
     "HyperDbg/hyperdbg/hyperhv/header"
@@ -71,7 +83,7 @@ target_include_directories(Hyperhv PRIVATE
     "HyperDbg/hyperdbg/include/components/spinlock/code"
 )
 target_compile_definitions(Hyperhv PRIVATE DHYPERDBG_VMM HYPERDBG_HYPEREVADE HYPERDBG_HYPER_LOG HYPERDBG_HYPERTRACE NTDDI_VERSION=0x0A000008)
-target_compile_options(Hyperhv PRIVATE /Od /Zi /RTC1)
+target_compile_options(Hyperhv PRIVATE $<$<COMPILE_LANGUAGE:C,CXX>:/Od> $<$<COMPILE_LANGUAGE:C,CXX>:/Zi> $<$<COMPILE_LANGUAGE:C,CXX>:/RTC1>)
 target_precompile_headers(Hyperhv PRIVATE "HyperDbg/hyperdbg/hyperhv/pch.h")
 
 km_lib(Hyperlog ${HyperlogSourceFiles})
@@ -119,7 +131,7 @@ target_include_directories(Platform PRIVATE
     "HyperDbg/hyperdbg/hyperhv/header"
     "HyperDbg/hyperdbg/hyperhv/code"
 )
-target_compile_definitions(Platform PRIVATE HYPERDBG_KERNEL_MODE SCRIPT_ENGINE_KERNEL_MODE HYPERDBG_VMM DHYPERDBG_VMM HYPERDBG_HYPEREVADE HYPERDBG_HYPER_LOG HYPERDBG_HYPERTRACE NTDDI_VERSION=0x0A000008)
+target_compile_definitions(Platform PRIVATE HYPERDBG_KERNEL_MODE HYPERDBG_VMM DHYPERDBG_VMM HYPERDBG_HYPEREVADE HYPERDBG_HYPER_LOG HYPERDBG_HYPERTRACE NTDDI_VERSION=0x0A000008)
 target_compile_options(Platform PRIVATE /Od /Zi /RTC1)
 target_precompile_headers(Platform PRIVATE "HyperDbg/hyperdbg/hyperhv/pch.h")
 
@@ -129,19 +141,19 @@ km_sys(hyperkd
     ${HyperkdAsmFiles}
     ${IncludeOptimizationsSourceFiles}
     ${IncludeSpinlockSourceFiles}
-    ${ScriptEvalSourceFiles}
 )
+# Override COMPILE_OPTIONS with generator expressions (has .asm files)
+set_target_properties(hyperkd PROPERTIES COMPILE_OPTIONS "${_KM_CXX_FLAGS}")
 target_include_directories(hyperkd PRIVATE
     "HyperDbg/hyperdbg/hyperkd"
     "HyperDbg/hyperdbg/hyperkd/header"
     "HyperDbg/hyperdbg/hyperkd/code"
     "HyperDbg/hyperdbg/include/components/optimizations/code"
     "HyperDbg/hyperdbg/include/components/spinlock/code"
-    "HyperDbg/hyperdbg/script-eval"
 )
 target_compile_definitions(hyperkd PRIVATE DHYPERDBG_DEBUGGER HYPERDBG_HYPEREVADE HYPERDBG_HYPER_LOG HYPERDBG_HYPERTRACE HYPERDBG_VMM NTDDI_VERSION=0x0A000008)
 target_precompile_headers(hyperkd PRIVATE "HyperDbg/hyperdbg/hyperkd/header/pch.h")
-target_compile_options(hyperkd PRIVATE /Od /Zi /RTC1)
+target_compile_options(hyperkd PRIVATE $<$<COMPILE_LANGUAGE:C,CXX>:/Od> $<$<COMPILE_LANGUAGE:C,CXX>:/Zi> $<$<COMPILE_LANGUAGE:C,CXX>:/RTC1>)
 target_link_options(hyperkd PRIVATE /DEBUG /FORCE:MULTIPLE)
 
 target_link_libraries(hyperkd
@@ -155,112 +167,48 @@ target_link_libraries(hyperkd
 )
 
 # ============================================================
-# User-mode targets
+# User-mode: epthook-gui (单exe，包含所有源文件)
 # ============================================================
 
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
-
-um_lib(Zydis ${ZydisSourceFiles})
-target_compile_options(Zydis PRIVATE /Od /Zi)
-
-file(GLOB_RECURSE PdbexSourceFiles "HyperDbg/hyperdbg/dependencies/pdbex/Source/*.cpp")
-list(FILTER PdbexSourceFiles EXCLUDE REGEX ".*main\\.cpp$")
-
-um_lib(Pdbex ${PdbexSourceFiles})
-target_include_directories(Pdbex PRIVATE
-    "HyperDbg/hyperdbg/dependencies/pdbex/Source"
-    "$ENV{VSINSTALLDIR}DIA SDK\\include"
-)
-target_compile_definitions(Pdbex PRIVATE _CRT_SECURE_NO_WARNINGS)
-target_compile_options(Pdbex PRIVATE /Od /Zi /std:c++latest)
-
-file(GLOB SymbolParserSourceFiles "HyperDbg/hyperdbg/symbol-parser/code/*.cpp")
-
-um_lib(SymbolParser ${SymbolParserSourceFiles})
-target_include_directories(SymbolParser PRIVATE
-    "HyperDbg/hyperdbg/symbol-parser"
-    "HyperDbg/hyperdbg/symbol-parser/header"
-    "HyperDbg/hyperdbg/symbol-parser/code"
-    "HyperDbg/hyperdbg/include"
-    "HyperDbg/hyperdbg/dependencies"
-    "HyperDbg/hyperdbg/dependencies/pdbex/Source"
-)
-target_compile_definitions(SymbolParser PRIVATE HYPERDBG_SYMBOL_PARSER _CRT_SECURE_NO_WARNINGS)
-target_compile_options(SymbolParser PRIVATE /Od /Zi)
-target_precompile_headers(SymbolParser PRIVATE "HyperDbg/hyperdbg/symbol-parser/pch.h")
-target_link_libraries(SymbolParser Pdbex)
-
-file(GLOB ScriptEngineSourceFiles "HyperDbg/hyperdbg/script-engine/code/*.c")
-list(APPEND ScriptEngineSourceFiles "HyperDbg/hyperdbg/script-engine/code/script_include.c")
-
-um_lib(ScriptEngine ${ScriptEngineSourceFiles} "HyperDbg/hyperdbg/include/platform/user/code/platform-lib-calls.c")
-target_include_directories(ScriptEngine PRIVATE
-    "HyperDbg/hyperdbg/script-engine"
-    "HyperDbg/hyperdbg/script-engine/header"
-    "HyperDbg/hyperdbg/script-engine/code"
-    "HyperDbg/hyperdbg/include"
-    "HyperDbg/hyperdbg/script-eval"
-    "HyperDbg/hyperdbg/include/platform/user/header"
-)
-target_compile_definitions(ScriptEngine PRIVATE SCRIPTENGINE_EXPORTS HYPERDBG_SCRIPT_ENGINE HYPERDBG_SYMBOL_PARSER _CRT_SECURE_NO_WARNINGS)
-target_compile_options(ScriptEngine PRIVATE /Od /Zi)
-target_precompile_headers(ScriptEngine PRIVATE "HyperDbg/hyperdbg/script-engine/header/pch.h")
-target_link_libraries(ScriptEngine SymbolParser)
+file(GLOB ZydisUserSourceFiles "HyperDbg/hyperdbg/dependencies/zydis/src/*.c")
+file(GLOB ZycoreUserSourceFiles "HyperDbg/hyperdbg/dependencies/zydis/dependencies/zycore/src/*.c")
+set(ZydisUserSourceFiles ${ZydisUserSourceFiles} ${ZycoreUserSourceFiles})
 
 file(GLOB_RECURSE LibhyperdbgSourceFiles "HyperDbg/hyperdbg/libhyperdbg/code/*.cpp")
 list(FILTER LibhyperdbgSourceFiles EXCLUDE REGEX ".*dllmain\\.cpp$")
 list(APPEND LibhyperdbgSourceFiles "HyperDbg/hyperdbg/libhyperdbg/pch.cpp")
 file(GLOB LibhyperdbgAsmFiles "HyperDbg/hyperdbg/libhyperdbg/code/assembly/*.asm")
-file(GLOB ScriptEvalCppFiles "HyperDbg/hyperdbg/script-eval/code/*.c")
 
-foreach(SRC ${ScriptEvalCppFiles})
-    get_filename_component(SRC_NAME ${SRC} NAME)
-    configure_file(${SRC} "${CMAKE_CURRENT_BINARY_DIR}/script-eval-cpp/${SRC_NAME}pp" COPYONLY)
-endforeach()
-
-file(GLOB ScriptEvalCppRenamedFiles "${CMAKE_CURRENT_BINARY_DIR}/script-eval-cpp/*.cpp")
-
-um_lib(ScriptEvalUser ${ScriptEvalCppRenamedFiles})
-target_include_directories(ScriptEvalUser PRIVATE
-    "HyperDbg/hyperdbg/script-eval"
-    "HyperDbg/hyperdbg/include"
-    "HyperDbg/hyperdbg/dependencies"
-    "HyperDbg/hyperdbg/dependencies/phnt"
-    "HyperDbg/hyperdbg/dependencies/zydis/include"
-    "HyperDbg/hyperdbg/dependencies/zydis/dependencies/zycore/include"
-    "HyperDbg/hyperdbg/libhyperdbg"
-    "HyperDbg/hyperdbg/script-engine/header"
-    "HyperDbg/hyperdbg/symbol-parser/header"
-)
-target_compile_definitions(ScriptEvalUser PRIVATE
-    HYPERDBG_LIBHYPERDBG
-    HYPERDBG_SCRIPT_ENGINE
-    HYPERDBG_SYMBOL_PARSER
-    ZYCORE_STATIC_DEFINE
-    ZYDIS_STATIC_DEFINE
-    HPRDBGCTRL_EXPORTS
-    NTDDI_VERSION=0x06010000
-    WINVER=0x0601
-    _WIN32_WINNT=0x0601
-    _CRT_SECURE_NO_WARNINGS
-)
-target_compile_options(ScriptEvalUser PRIVATE /Od /Zi)
-target_precompile_headers(ScriptEvalUser PRIVATE "HyperDbg/hyperdbg/libhyperdbg/pch.h")
-
-um_lib(Libhyperdbg
+set(EpthookGuiSources
+    ${ZydisUserSourceFiles}
     ${LibhyperdbgSourceFiles}
-    ${LibhyperdbgAsmFiles}
     "HyperDbg/hyperdbg/include/components/pe/code/pe-image-reader.cpp"
     "HyperDbg/hyperdbg/include/platform/user/code/platform-intrinsics.c"
     "HyperDbg/hyperdbg/include/platform/user/code/windows-only/windows-privilege.c"
 )
+
 set_source_files_properties(
     "HyperDbg/hyperdbg/include/platform/user/code/platform-intrinsics.c"
     "HyperDbg/hyperdbg/include/platform/user/code/windows-only/windows-privilege.c"
     PROPERTIES LANGUAGE CXX
 )
+set_source_files_properties(${LibhyperdbgAsmFiles} PROPERTIES LANGUAGE ASM_MASM)
 
-target_include_directories(Libhyperdbg PRIVATE
+# Zydis files用C编译，其余用CXX
+foreach(SRC ${ZydisUserSourceFiles})
+    set_source_files_properties(${SRC} PROPERTIES LANGUAGE C)
+endforeach()
+
+add_executable(epthook-gui WIN32 ${EpthookGuiSources})
+set_target_properties(epthook-gui PROPERTIES
+    CXX_STANDARD 20
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF
+    MSVC_RUNTIME_LIBRARY "MultiThreaded"
+)
+
+target_include_directories(epthook-gui PRIVATE
+    ${WDK_UM_INCLUDE_DIRS}
     "HyperDbg/hyperdbg/libhyperdbg"
     "HyperDbg/hyperdbg/libhyperdbg/header"
     "HyperDbg/hyperdbg/libhyperdbg/code"
@@ -269,140 +217,51 @@ target_include_directories(Libhyperdbg PRIVATE
     "HyperDbg/hyperdbg/include/components/pe/code"
     "HyperDbg/hyperdbg/include/platform/user/header"
     "HyperDbg/hyperdbg/include/platform/user/header/windows-only"
+    "HyperDbg/hyperdbg/include/SDK/headers"
     "HyperDbg/hyperdbg/dependencies"
     "HyperDbg/hyperdbg/dependencies/phnt"
     "HyperDbg/hyperdbg/dependencies/zydis/include"
+    "HyperDbg/hyperdbg/dependencies/zydis/src"
     "HyperDbg/hyperdbg/dependencies/zydis/dependencies/zycore/include"
     "HyperDbg/hyperdbg/dependencies/keystone/include"
-    "HyperDbg/hyperdbg/dependencies/pdbex/Source"
-    "HyperDbg/hyperdbg/script-eval"
-    "HyperDbg/hyperdbg/script-engine/header"
-    "HyperDbg/hyperdbg/symbol-parser/header"
+    "HyperDbg/hyperdbg/include/keystone"
+    ${QT_INCLUDE_DIRS}
 )
-target_compile_definitions(Libhyperdbg PRIVATE
+
+target_compile_definitions(epthook-gui PRIVATE
+    _CRT_SECURE_NO_WARNINGS
     HYPERDBG_LIBHYPERDBG
-    HYPERDBG_SCRIPT_ENGINE
-    HYPERDBG_SYMBOL_PARSER
-    ZYCORE_STATIC_DEFINE
-    ZYDIS_STATIC_DEFINE
-    HPRDBGCTRL_EXPORTS
+    HYPERDBG_USER_MODE
+    ZYCORE_STATIC_BUILD
+    ZYDIS_STATIC_BUILD
     NTDDI_VERSION=0x06010000
     WINVER=0x0601
     _WIN32_WINNT=0x0601
-    _CRT_SECURE_NO_WARNINGS
-)
-target_compile_options(Libhyperdbg PRIVATE /Od /Zi)
-set_source_files_properties(${LibhyperdbgAsmFiles} PROPERTIES LANGUAGE ASM_MASM)
-target_precompile_headers(Libhyperdbg PRIVATE "HyperDbg/hyperdbg/libhyperdbg/pch.h")
-target_link_libraries(Libhyperdbg
-    ScriptEngine
-    SymbolParser
-    Pdbex
-    Zydis
-    ScriptEvalUser
+    MIQT_BUILDING_DLL
+    MIQT_WINDOWSQTSTATIC
+    QT_STATIC
+    QT_VERSION_MAJOR=6
+    QT_VERSION_MINOR=11
+    QT_VERSION_PATCH=0
+    Q_CORE_EXPORT=
+    Q_GUI_EXPORT=
+    Q_WIDGETS_EXPORT=
 )
 
-um_exe(hyperdbg-cli "HyperDbg/hyperdbg/hyperdbg-cli/hyperdbg-cli.cpp")
-target_include_directories(hyperdbg-cli PRIVATE
-    "HyperDbg/hyperdbg/include"
-    "HyperDbg/hyperdbg/dependencies"
+target_compile_options(epthook-gui PRIVATE /O2 /Zi /MT ${QT_COMPILE_OPTIONS})
+target_link_options(epthook-gui PRIVATE
+    /DEBUG /FORCE:MULTIPLE /SUBSYSTEM:WINDOWS
 )
-target_compile_definitions(hyperdbg-cli PRIVATE
-    HYPERDBG_LIBHYPERDBG
-    HYPERDBG_SCRIPT_ENGINE
-    HYPERDBG_SYMBOL_PARSER
-    HYPERDBG_DEBUG
-    _CRT_SECURE_NO_WARNINGS
-)
-target_compile_options(hyperdbg-cli PRIVATE /Od /Zi)
-target_link_options(hyperdbg-cli PRIVATE /DEBUG /FORCE:MULTIPLE
-    /ALTERNATENAME:__imp_pdbex_export=pdbex_export
-    /ALTERNATENAME:__imp_pdbex_set_logging_method_export=pdbex_set_logging_method_export
-)
-target_link_libraries(hyperdbg-cli
-    Libhyperdbg
+foreach(_lib_dir ${WDK_UM_LIB_DIRS})
+    target_link_options(epthook-gui PRIVATE "/LIBPATH:${_lib_dir}")
+endforeach()
+target_link_options(epthook-gui PRIVATE "/LIBPATH:${CMAKE_SOURCE_DIR}/HyperDbg/hyperdbg/libraries/keystone/release-lib")
+
+target_link_libraries(epthook-gui
+    ${QT_LINK_LIBRARIES}
     dbghelp
-    urlmon
-    shell32
-    ole32
-    oleaut32
+    psapi
     keystone
-)
-target_link_directories(hyperdbg-cli PRIVATE
-    "HyperDbg/hyperdbg/libraries/keystone/debug-lib"
-    "${CMAKE_CURRENT_BINARY_DIR}"
+    synchronization
 )
 
-add_custom_command(TARGET hyperdbg-cli PRE_LINK
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different
-        "${CMAKE_CURRENT_BINARY_DIR}/Zydis.lib"
-        "${CMAKE_CURRENT_BINARY_DIR}/Zycore.lib"
-)
-
-# ============================================================
-# EPT Hook Demo
-# ============================================================
-
-um_exe(epthook-demo "epthook-demo.cpp")
-target_include_directories(epthook-demo PRIVATE
-    "HyperDbg/hyperdbg/include"
-    "HyperDbg/hyperdbg/dependencies"
-)
-target_compile_definitions(epthook-demo PRIVATE
-    HYPERDBG_LIBHYPERDBG
-    HYPERDBG_SCRIPT_ENGINE
-    HYPERDBG_SYMBOL_PARSER
-    _CRT_SECURE_NO_WARNINGS
-)
-target_compile_options(epthook-demo PRIVATE /Od /Zi)
-target_link_options(epthook-demo PRIVATE /DEBUG /FORCE:MULTIPLE
-    /ALTERNATENAME:__imp_pdbex_export=pdbex_export
-    /ALTERNATENAME:__imp_pdbex_set_logging_method_export=pdbex_set_logging_method_export
-)
-target_link_libraries(epthook-demo
-    Libhyperdbg
-    dbghelp
-    urlmon
-    shell32
-    ole32
-    oleaut32
-    keystone
-)
-target_link_directories(epthook-demo PRIVATE
-    "HyperDbg/hyperdbg/libraries/keystone/debug-lib"
-    "${CMAKE_CURRENT_BINARY_DIR}"
-)
-
-# ============================================================
-# Debug Demo (VMI local mode notepad debugger)
-# ============================================================
-
-um_exe(debug-demo "debug-demo.cpp")
-target_include_directories(debug-demo PRIVATE
-    "HyperDbg/hyperdbg/include"
-    "HyperDbg/hyperdbg/dependencies"
-)
-target_compile_definitions(debug-demo PRIVATE
-    HYPERDBG_LIBHYPERDBG
-    HYPERDBG_SCRIPT_ENGINE
-    HYPERDBG_SYMBOL_PARSER
-    _CRT_SECURE_NO_WARNINGS
-)
-target_compile_options(debug-demo PRIVATE /Od /Zi)
-target_link_options(debug-demo PRIVATE /DEBUG /FORCE:MULTIPLE
-    /ALTERNATENAME:__imp_pdbex_export=pdbex_export
-    /ALTERNATENAME:__imp_pdbex_set_logging_method_export=pdbex_set_logging_method_export
-)
-target_link_libraries(debug-demo
-    Libhyperdbg
-    dbghelp
-    urlmon
-    shell32
-    ole32
-    oleaut32
-    keystone
-)
-target_link_directories(debug-demo PRIVATE
-    "HyperDbg/hyperdbg/libraries/keystone/debug-lib"
-    "${CMAKE_CURRENT_BINARY_DIR}"
-)
