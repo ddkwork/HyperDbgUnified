@@ -379,7 +379,10 @@ public:
 
     bool ConnectLocal()
     {
-        RunCmd(".connect local");
+        Logger::Log(Logger::INFO, "Connecting to local debug session...");
+        fflush(stdout);
+        INT ret = RunCmd(".connect local");
+        Logger::Log(Logger::INFO, "connect returned: %d", ret);
         RunCmd("printf(\"[INIT] Environment ready\\n\");");
         return true;
     }
