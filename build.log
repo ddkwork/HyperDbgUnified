@@ -1,599 +1,362 @@
-[1/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\HyperDbgIntegration.cpp for CXX dependencies
-cl : Command line warning D9025 : overriding '/std:c++20' with '/std:c++latest'
-[2/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDBExtractor.cpp for CXX dependencies
-cl : Command line warning D9025 : overriding '/std:c++20' with '/std:c++latest'
-[3/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.cpp for CXX dependencies
-cl : Command line warning D9025 : overriding '/std:c++20' with '/std:c++latest'
-[4/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDBHeaderReconstructor.cpp for CXX dependencies
-cl : Command line warning D9025 : overriding '/std:c++20' with '/std:c++latest'
-[5/555] Generating CXX dyndep file CMakeFiles\Pdbex.dir\CXX.dd
-[6/555] Building C object CMakeFiles\ScriptEngine.dir\cmake_pch.c.obj
-D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/script-engine/header/pch.h(17): warning C4005: 'HYPERDBG_SCRIPT_ENGINE': macro redefinition
-D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/script-engine/header/pch.h(17): note: 'HYPERDBG_SCRIPT_ENGINE' previously declared on the command line
-[7/555] Building C object CMakeFiles\Hyperlog.dir\cmake_pch.c.obj
+[1/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Disassembler.c.obj
+[2/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Decoder.c.obj
+[3/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\DecoderData.c.obj
+[4/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Encoder.c.obj
+[5/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Formatter.c.obj
+[6/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterATT.c.obj
+[7/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\EncoderData.c.obj
+[8/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterBase.c.obj
+[9/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterBuffer.c.obj
+[10/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterIntel.c.obj
+[11/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\MetaInfo.c.obj
+[12/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Register.c.obj
+[13/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Mnemonic.c.obj
+[14/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Segment.c.obj
+[15/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\String.c.obj
+[16/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Utils.c.obj
+[17/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Zydis.c.obj
+[18/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Allocator.c.obj
+[19/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\ArgParse.c.obj
+[20/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Bitset.c.obj
+[21/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Format.c.obj
+[22/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\List.c.obj
+[23/339] Building C object CMakeFiles\Hyperlog.dir\cmake_pch.c.obj
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperlog/header/pch.h(39): warning C4005: 'HYPERDBG_HYPER_LOG': macro redefinition
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperlog/header/pch.h(39): note: 'HYPERDBG_HYPER_LOG' previously declared on the command line
-[8/555] Building C object CMakeFiles\Hyperhv.dir\cmake_pch.c.obj
-[9/555] Building C object CMakeFiles\Hyperevade.dir\cmake_pch.c.obj
+[24/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\String.c.obj
+[25/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Zycore.c.obj
+[26/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Vector.c.obj
+[27/339] Building C object CMakeFiles\Hyperlog.dir\HyperDbg\hyperdbg\hyperlog\code\UnloadDll.c.obj
+[28/339] Building C object CMakeFiles\Hyperlog.dir\HyperDbg\hyperdbg\hyperlog\code\Logging.c.obj
+[29/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\apm88xxxx.c.obj
+[30/339] Building C object CMakeFiles\Hyperevade.dir\cmake_pch.c.obj
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperevade/header/pch.h(39): warning C4005: 'HYPERDBG_HYPEREVADE': macro redefinition
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperevade/header/pch.h(39): note: 'HYPERDBG_HYPEREVADE' previously declared on the command line
-[10/555] Building C object CMakeFiles\Hypertrace.dir\cmake_pch.c.obj
+[31/339] Building C object CMakeFiles\Hypertrace.dir\cmake_pch.c.obj
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hypertrace/header/pch.h(38): warning C4005: 'HYPERDBG_HYPERTRACE': macro redefinition
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hypertrace/header/pch.h(38): note: 'HYPERDBG_HYPERTRACE' previously declared on the command line
-[11/555] Building C object CMakeFiles\Platform.dir\cmake_pch.c.obj
+[32/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\bcm2835.c.obj
+[33/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\hardware.c.obj
+[34/339] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\SharedData.c.obj
+[35/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\msm8974.c.obj
+[36/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\msm8x60.c.obj
+[37/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\common.c.obj
+[38/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\mx6uart.c.obj
+[39/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\nvidia.c.obj
+[40/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\omap.c.obj
+[41/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\ioaccess.c.obj
+[42/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\pl011.c.obj
+[43/339] Building C object CMakeFiles\Hyperhv.dir\cmake_pch.c.obj
+[44/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\sam5250.c.obj
+[45/339] Building C object CMakeFiles\Platform.dir\cmake_pch.c.obj
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperhv/pch.h(23): warning C4005: 'SCRIPT_ENGINE_KERNEL_MODE': macro redefinition
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperhv/pch.h(23): note: 'SCRIPT_ENGINE_KERNEL_MODE' previously declared on the command line
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperhv/pch.h(24): warning C4005: 'HYPERDBG_KERNEL_MODE': macro redefinition
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperhv/pch.h(24): note: 'HYPERDBG_KERNEL_MODE' previously declared on the command line
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperhv/pch.h(25): warning C4005: 'HYPERDBG_VMM': macro redefinition
 D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/hyperhv/pch.h(25): note: 'HYPERDBG_VMM' previously declared on the command line
-[12/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\DecoderData.c.obj
-[13/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Decoder.c.obj
-[14/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Disassembler.c.obj
-[15/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\EncoderData.c.obj
-[16/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Formatter.c.obj
-[17/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Encoder.c.obj
-[18/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterATT.c.obj
-[19/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterBuffer.c.obj
-[20/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterBase.c.obj
-[21/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\MetaInfo.c.obj
-[22/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterIntel.c.obj
-[23/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Register.c.obj
-[24/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Mnemonic.c.obj
-[25/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Segment.c.obj
-[26/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\String.c.obj
-[27/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Utils.c.obj
-[28/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Zydis.c.obj
-[29/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Allocator.c.obj
-[30/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\src\SharedData.c.obj
-[31/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\ArgParse.c.obj
-[32/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Bitset.c.obj
-[33/555] Building CXX object CMakeFiles\Pdbex.dir\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.cpp.obj
-cl : Command line warning D9025 : overriding '/std:c++20' with '/std:c++latest'
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.h(2): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.h(2): note: '_CRT_SECURE_NO_WARNINGS' previously declared on the command line
-[34/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Format.c.obj
-[35/555] Building CXX object CMakeFiles\Pdbex.dir\HyperDbg\hyperdbg\dependencies\pdbex\Source\HyperDbgIntegration.cpp.obj
-cl : Command line warning D9025 : overriding '/std:c++20' with '/std:c++latest'
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.h(2): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.h(2): note: '_CRT_SECURE_NO_WARNINGS' previously declared on the command line
-[36/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\List.c.obj
-[37/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Zycore.c.obj
-[38/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\String.c.obj
-[39/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\globals.c.obj
-[40/555] Building C object CMakeFiles\Zydis.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Vector.c.obj
-[41/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\common.c.obj
-[42/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\pch.c.obj
-[43/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\hardware.c.obj
-[44/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\parse-table.c.obj
-[45/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\script_include.c.obj
-[46/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\type.c.obj
-[47/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\include\platform\user\code\platform-lib-calls.c.obj
-[48/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\scanner.c.obj
-[49/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Decoder.c.obj
-[50/555] Building CXX object CMakeFiles\SymbolParser.dir\cmake_pch.cxx.obj
-D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/symbol-parser/pch.h(17): warning C4005: 'HYPERDBG_SYMBOL_PARSER': macro redefinition
-D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/symbol-parser/pch.h(17): note: 'HYPERDBG_SYMBOL_PARSER' previously declared on the command line
-[51/555] Building CXX object CMakeFiles\Pdbex.dir\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDBHeaderReconstructor.cpp.obj
-cl : Command line warning D9025 : overriding '/std:c++20' with '/std:c++latest'
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.h(2): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.h(2): note: '_CRT_SECURE_NO_WARNINGS' previously declared on the command line
-[52/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Disassembler.c.obj
-[53/555] Building C object CMakeFiles\ScriptEngine.dir\HyperDbg\hyperdbg\script-engine\code\script-engine.c.obj
-[54/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\DecoderData.c.obj
-[55/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\hyperdbg-cli\hyperdbg-cli.cpp for CXX dependencies
-[56/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\epthook-demo.cpp for CXX dependencies
-[57/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Encoder.c.obj
-[58/555] Building CXX object CMakeFiles\Pdbex.dir\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDBExtractor.cpp.obj
-cl : Command line warning D9025 : overriding '/std:c++20' with '/std:c++latest'
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.h(2): warning C4005: '_CRT_SECURE_NO_WARNINGS': macro redefinition
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\pdbex\Source\PDB.h(2): note: '_CRT_SECURE_NO_WARNINGS' previously declared on the command line
-[59/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Formatter.c.obj
-[60/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\EncoderData.c.obj
-[61/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterATT.c.obj
-[62/555] Linking CXX static library Pdbex.lib
-[63/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterBase.c.obj
-[64/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\symbol-parser\code\casting.cpp for CXX dependencies
-[65/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterBuffer.c.obj
-[66/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\symbol-parser\code\common-utils.cpp for CXX dependencies
-[67/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\FormatterIntel.c.obj
-[68/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\MetaInfo.c.obj
-[69/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\symbol-parser\code\pdb-identity.cpp for CXX dependencies
-[70/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Register.c.obj
-[71/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Segment.c.obj
-[72/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Mnemonic.c.obj
-[73/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\symbol-parser\code\codeview-rsds.cpp for CXX dependencies
-[74/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\symbol-parser\code\symbol-parser.cpp for CXX dependencies
-[75/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\String.c.obj
-[76/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Allocator.c.obj
-[77/555] Generating CXX dyndep file CMakeFiles\SymbolParser.dir\CXX.dd
-[78/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Utils.c.obj
-[79/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\ArgParse.c.obj
-[80/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\Zydis.c.obj
-[81/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Format.c.obj
-[82/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Bitset.c.obj
-[83/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\List.c.obj
-[84/555] Building CXX object CMakeFiles\SymbolParser.dir\HyperDbg\hyperdbg\symbol-parser\code\casting.cpp.obj
-[85/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Vector.c.obj
-[86/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\String.c.obj
-[87/555] Building CXX object CMakeFiles\SymbolParser.dir\HyperDbg\hyperdbg\symbol-parser\code\codeview-rsds.cpp.obj
-[88/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\src\Zycore.c.obj
-[89/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\broadcast\Broadcast.c.obj
-[90/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\common\Bitwise.c.obj
-[91/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\broadcast\DpcRoutines.c.obj
-[92/555] Building CXX object CMakeFiles\SymbolParser.dir\HyperDbg\hyperdbg\symbol-parser\code\pdb-identity.cpp.obj
-[93/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\common\Common.c.obj
-[94/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\components\registers\DebugRegisters.c.obj
-[95/555] Building CXX object CMakeFiles\SymbolParser.dir\HyperDbg\hyperdbg\symbol-parser\code\common-utils.cpp.obj
-[96/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\devices\Pci.c.obj
-[97/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\devices\Apic.c.obj
-[98/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\disassembler\Disassembler.c.obj
-[99/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\features\CompatibilityChecks.c.obj
-[100/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\disassembler\ZydisKernel.c.obj
-[101/555] Building C object CMakeFiles\zydis_kernel.dir\HyperDbg\hyperdbg\dependencies\zydis\src\SharedData.c.obj
-[102/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\features\DirtyLogging.c.obj
-[103/555] Building CXX object CMakeFiles\Libhyperdbg.dir\cmake_pch.cxx.obj
-D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/libhyperdbg/pch.h(111): warning C4005: 'HYPERDBG_LIBHYPERDBG': macro redefinition
-D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/libhyperdbg/pch.h(111): note: 'HYPERDBG_LIBHYPERDBG' previously declared on the command line
-[104/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\ept-hook\EptHook.c.obj
-[105/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\globals\GlobalVariableManagement.c.obj
-[106/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\ept-hook\ExecTrap.c.obj
-[107/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\ept-hook\ModeBasedExecHook.c.obj
-[108/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\Callback.c.obj
-[109/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\syscall-hook\EferHook.c.obj
-[110/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\syscall-hook\SyscallCallback.c.obj
-[111/555] Building CXX object CMakeFiles\ScriptEvalUser.dir\cmake_pch.cxx.obj
-D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/libhyperdbg/pch.h(111): warning C4005: 'HYPERDBG_LIBHYPERDBG': macro redefinition
-D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/libhyperdbg/pch.h(111): note: 'HYPERDBG_LIBHYPERDBG' previously declared on the command line
-[112/555] Building CXX object CMakeFiles\SymbolParser.dir\HyperDbg\hyperdbg\symbol-parser\code\symbol-parser.cpp.obj
-[113/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\common\list.cpp for CXX dependencies
-[114/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\app\libhyperdbg.cpp for CXX dependencies
-[115/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\common\common.cpp for CXX dependencies
-[116/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bc.cpp for CXX dependencies
-[117/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\app\packets.cpp for CXX dependencies
-[118/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\app\messaging.cpp for CXX dependencies
-[119/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\a.cpp for CXX dependencies
-[120/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\build\script-eval-cpp\Functions.cpp for CXX dependencies
-[121/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\common\spinlock.cpp for CXX dependencies
-[122/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\build\script-eval-cpp\Keywords.cpp for CXX dependencies
-[123/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\build\script-eval-cpp\PseudoRegisters.cpp for CXX dependencies
-[124/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\build\script-eval-cpp\Regs.cpp for CXX dependencies
-[125/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bp.cpp for CXX dependencies
-[126/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bd.cpp for CXX dependencies
-[127/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\build\script-eval-cpp\ScriptEngineEval.cpp for CXX dependencies
-[128/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\be.cpp for CXX dependencies
-[129/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bl.cpp for CXX dependencies
-[130/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\continue.cpp for CXX dependencies
-[131/555] Generating CXX dyndep file CMakeFiles\ScriptEvalUser.dir\CXX.dd
-[132/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\core.cpp for CXX dependencies
-[133/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\d-u.cpp for CXX dependencies
-[134/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\cpu.cpp for CXX dependencies
-[135/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\dt-struct.cpp for CXX dependencies
-[136/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\e.cpp for CXX dependencies
-[137/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\exit.cpp for CXX dependencies
-[138/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\events.cpp for CXX dependencies
-[139/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\eval.cpp for CXX dependencies
-[140/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\g.cpp for CXX dependencies
-[141/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\flush.cpp for CXX dependencies
-[142/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\gg.cpp for CXX dependencies
-[143/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\gu.cpp for CXX dependencies
-[144/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\k.cpp for CXX dependencies
-[145/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\load.cpp for CXX dependencies
-[146/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\i.cpp for CXX dependencies
-[147/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\lm.cpp for CXX dependencies
-[148/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\output.cpp for CXX dependencies
-[149/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\p.cpp for CXX dependencies
-[150/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\preactivate.cpp for CXX dependencies
-[151/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\pause.cpp for CXX dependencies
-[152/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\prealloc.cpp for CXX dependencies
-[153/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\print.cpp for CXX dependencies
-[154/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\r.cpp for CXX dependencies
-[155/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\rdmsr.cpp for CXX dependencies
-[156/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\t.cpp for CXX dependencies
-[157/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\s.cpp for CXX dependencies
-[158/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\sleep.cpp for CXX dependencies
-[159/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\unload.cpp for CXX dependencies
-[160/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\test.cpp for CXX dependencies
-[161/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\settings.cpp for CXX dependencies
-[162/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\wrmsr.cpp for CXX dependencies
-[163/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\x.cpp for CXX dependencies
-[164/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\cpuid.cpp for CXX dependencies
-[165/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\crwrite.cpp for CXX dependencies
-[166/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\dr.cpp for CXX dependencies
-[167/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\apic.cpp for CXX dependencies
-[168/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\exception.cpp for CXX dependencies
-[169/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\epthook.cpp for CXX dependencies
-[170/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\hide.cpp for CXX dependencies
-[171/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\epthook2.cpp for CXX dependencies
-[172/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\idt.cpp for CXX dependencies
-[173/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\interrupt.cpp for CXX dependencies
-[174/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\lbrdump.cpp for CXX dependencies
-[175/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioin.cpp for CXX dependencies
-[176/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioapic.cpp for CXX dependencies
-[177/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioout.cpp for CXX dependencies
-[178/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\measure.cpp for CXX dependencies
-[179/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\lbr.cpp for CXX dependencies
-[180/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\mode.cpp for CXX dependencies
-[181/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\monitor.cpp for CXX dependencies
-[182/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\msrread.cpp for CXX dependencies
-[183/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\msrwrite.cpp for CXX dependencies
-[184/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pa2va.cpp for CXX dependencies
-[185/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pcicam.cpp for CXX dependencies
-[186/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pcitree.cpp for CXX dependencies
-[187/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pte.cpp for CXX dependencies
-[188/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pmc.cpp for CXX dependencies
-[189/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\rev.cpp for CXX dependencies
-[190/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\syscall-sysret.cpp for CXX dependencies
-[191/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\smi.cpp for CXX dependencies
-[192/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pt.cpp for CXX dependencies
-[193/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\trace.cpp for CXX dependencies
-[194/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\track.cpp for CXX dependencies
-[195/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\tsc.cpp for CXX dependencies
-[196/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\xsetbv.cpp for CXX dependencies
-[197/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\unhide.cpp for CXX dependencies
-[198/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\va2pa.cpp for CXX dependencies
-[199/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\vmcall.cpp for CXX dependencies
-[200/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\hwdbg-commands\hw.cpp for CXX dependencies
-[201/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\hwdbg-commands\hw_clk.cpp for CXX dependencies
-[202/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\attach.cpp for CXX dependencies
-[203/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\cls.cpp for CXX dependencies
-[204/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\connect.cpp for CXX dependencies
-[205/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\debug.cpp for CXX dependencies
-[206/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\detach.cpp for CXX dependencies
-[207/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\disconnect.cpp for CXX dependencies
-[208/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\dump.cpp for CXX dependencies
-[209/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\formats.cpp for CXX dependencies
-[210/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\help.cpp for CXX dependencies
-[211/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\kill.cpp for CXX dependencies
-[212/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\listen.cpp for CXX dependencies
-[213/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\logclose.cpp for CXX dependencies
-[214/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\pagein.cpp for CXX dependencies
-[215/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\logopen.cpp for CXX dependencies
-[216/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\pe.cpp for CXX dependencies
-[217/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\script.cpp for CXX dependencies
-[218/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\restart.cpp for CXX dependencies
-[219/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\start.cpp for CXX dependencies
-[220/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\process.cpp for CXX dependencies
-[221/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\switch.cpp for CXX dependencies
-[222/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\status.cpp for CXX dependencies
-[223/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\sym.cpp for CXX dependencies
-[224/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\sympath.cpp for CXX dependencies
-[225/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\thread.cpp for CXX dependencies
-[226/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\forwarding.cpp for CXX dependencies
-[227/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\namedpipe.cpp for CXX dependencies
-[228/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\remote-connection.cpp for CXX dependencies
-[229/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\tcpclient.cpp for CXX dependencies
-[230/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\debugger.cpp for CXX dependencies
-[231/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\tcpserver.cpp for CXX dependencies
-[232/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\break-control.cpp for CXX dependencies
-[233/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\interpreter.cpp for CXX dependencies
-[234/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\driver-loader\install.cpp for CXX dependencies
-[235/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\steppings.cpp for CXX dependencies
-[236/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\kernel-level\kd.cpp for CXX dependencies
-[237/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\assembler.cpp for CXX dependencies
-[238/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\kernel-level\kernel-listening.cpp for CXX dependencies
-[239/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\callstack.cpp for CXX dependencies
-[240/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\disassembler.cpp for CXX dependencies
-[241/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\readmem.cpp for CXX dependencies
-[242/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\pci-id.cpp for CXX dependencies
-[243/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\script-engine-wrapper.cpp for CXX dependencies
-[244/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\script-engine.cpp for CXX dependencies
-[245/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\symbol.cpp for CXX dependencies
-[246/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\tests\tests.cpp for CXX dependencies
-[247/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\transparency\transparency.cpp for CXX dependencies
-[248/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\transparency\gaussian-rng.cpp for CXX dependencies
-[249/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\pe-parser.cpp for CXX dependencies
-[250/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\ud.cpp for CXX dependencies
-[251/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\user-listening.cpp for CXX dependencies
-[252/555] Linking CXX static library SymbolParser.lib
-[253/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\export\export.cpp for CXX dependencies
-[254/555] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\Keywords.cpp.obj
-[255/555] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\Functions.cpp.obj
-[256/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\hwdbg\hwdbg-interpreter.cpp for CXX dependencies
-[257/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\hwdbg\hwdbg-scripts.cpp for CXX dependencies
-[258/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\objects\objects.cpp for CXX dependencies
-[259/555] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\PseudoRegisters.cpp.obj
-[260/555] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\Regs.cpp.obj
-[261/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\rev\rev-ctrl.cpp for CXX dependencies
-[262/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\Dispatch.c.obj
-[263/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\Export.c.obj
-[264/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\DirectVmcall.c.obj
-[265/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\Configuration.c.obj
-[266/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\HyperEvade.c.obj
-[267/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\include\platform\user\code\platform-intrinsics.c for CXX dependencies
-[268/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\pch.cpp for CXX dependencies
-[269/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\Conversion.c.obj
-[270/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\include\components\pe\code\pe-image-reader.cpp for CXX dependencies
-[271/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\AddressCheck.c.obj
-[272/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\Layout.c.obj
-[273/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\MemoryMapper.c.obj
-[274/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\MemoryManager.c.obj
-[275/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\SwitchLayout.c.obj
-[276/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\Segmentation.c.obj
-[277/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\mmio\MmioShadowing.c.obj
-[278/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\processor\Smm.c.obj
-[279/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\processor\Idt.c.obj
-[280/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\ept\Ept.c.obj
-[281/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\ept\Vpid.c.obj
-[282/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\ept\Invept.c.obj
-[283/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\CrossVmcalls.c.obj
-[284/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Counters.c.obj
-[285/555] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\ScriptEngineEval.cpp.obj
-[286/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Events.c.obj
-[287/555] Scanning D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\include\platform\user\code\windows-only\windows-privilege.c for CXX dependencies
-[288/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\CrossVmexits.c.obj
-[289/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\IdtEmulation.c.obj
-[290/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Hv.c.obj
-[291/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\IoHandler.c.obj
-[292/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\ManageRegs.c.obj
-[293/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\MsrHandlers.c.obj
-[294/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Mtf.c.obj
-[295/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\ProtectedHv.c.obj
-[296/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Vmcall.c.obj
-[297/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Vmexit.c.obj
-[298/555] Generating CXX dyndep file CMakeFiles\Libhyperdbg.dir\CXX.dd
-[299/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\VmxBroadcast.c.obj
-[300/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\VmxMechanisms.c.obj
-[301/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Vmx.c.obj
-[302/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\optimizations\code\AvlTree.c.obj
-[303/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\optimizations\code\BinarySearch.c.obj
-[304/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\optimizations\code\InsertionSort.c.obj
-[305/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\VmxRegions.c.obj
-[306/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\spinlock\code\Spinlock.c.obj
-[307/555] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\optimizations\code\OptimizationsExamples.c.obj
-[308/555] Building C object CMakeFiles\Hyperlog.dir\HyperDbg\hyperdbg\hyperlog\code\UnloadDll.c.obj
-[309/555] Building C object CMakeFiles\Hyperlog.dir\HyperDbg\hyperdbg\hyperlog\code\Logging.c.obj
-[310/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\bcm2835.c.obj
-[311/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\hardware.c.obj
-[312/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\apm88xxxx.c.obj
-[313/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\msm8974.c.obj
-[314/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\msm8x60.c.obj
-[315/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\mx6uart.c.obj
-[316/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\pl011.c.obj
-[317/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\nvidia.c.obj
-[318/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\omap.c.obj
-[319/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\sdm845.c.obj
-[320/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\sam5250.c.obj
-[321/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\common.c.obj
-[322/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\ioaccess.c.obj
-[323/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\spimax311.c.obj
-[324/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\uartio.c.obj
-[325/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\uart16550.c.obj
-[326/555] Building C object CMakeFiles\Hyperevade.dir\HyperDbg\hyperdbg\hyperevade\code\SyscallFootprints.c.obj
-[327/555] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\usif.c.obj
-[328/555] Building C object CMakeFiles\Hyperevade.dir\HyperDbg\hyperdbg\hyperevade\code\VmxFootprints.c.obj
-[329/555] Building C object CMakeFiles\Hyperevade.dir\HyperDbg\hyperdbg\hyperevade\code\UnloadDll.c.obj
-[330/555] Building C object CMakeFiles\Hyperevade.dir\HyperDbg\hyperdbg\hyperevade\code\Transparency.c.obj
-[331/555] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\api\LbrApi.c.obj
-[332/555] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\broadcast\Broadcast.c.obj
-[333/555] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\api\TraceApi.c.obj
-[334/555] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\api\PtApi.c.obj
-[335/555] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\broadcast\DpcRoutines.c.obj
-[336/555] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\common\UnloadDll.c.obj
-[337/555] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\lbr\Lbr.c.obj
-[338/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformBroadcast.c.obj
-[339/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformDpc.c.obj
-[340/555] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\pt\Pt.c.obj
-[341/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformCpu.c.obj
-[342/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformDbg.c.obj
-[343/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformIntrinsics.c.obj
-[344/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformEvent.c.obj
-[345/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformIntrinsicsVmx.c.obj
-[346/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformIo.c.obj
-[347/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformMem.c.obj
-[348/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformProcess.c.obj
-[349/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformIrql.c.obj
-[350/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformTime.c.obj
-[351/555] Linking CXX static library ScriptEvalUser.lib
-[352/555] Linking CXX static library ScriptEngine.lib
-[353/555] Linking C static library Zydis.lib
-[354/555] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformSpinlock.c.obj
-[355/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\common\list.cpp.obj
-[356/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\app\packets.cpp.obj
-[357/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\app\messaging.cpp.obj
-[358/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\common\spinlock.cpp.obj
-[359/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\app\libhyperdbg.cpp.obj
-[360/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bd.cpp.obj
-[361/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bc.cpp.obj
-[362/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\continue.cpp.obj
-[363/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bl.cpp.obj
-[364/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\be.cpp.obj
-[365/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\core.cpp.obj
-[366/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bp.cpp.obj
-[367/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\a.cpp.obj
-[368/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\d-u.cpp.obj
-[369/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\events.cpp.obj
-[370/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\common\common.cpp.obj
-[371/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\exit.cpp.obj
-[372/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\flush.cpp.obj
-[373/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\cpu.cpp.obj
-[374/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\g.cpp.obj
-[375/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\gg.cpp.obj
-[376/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\e.cpp.obj
-[377/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\gu.cpp.obj
-[378/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\dt-struct.cpp.obj
-[379/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\i.cpp.obj
-[380/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\k.cpp.obj
-[381/555] Building C object CMakeFiles\hyperkd.dir\cmake_pch.c.obj
-[382/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\eval.cpp.obj
-[383/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\load.cpp.obj
-[384/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\pause.cpp.obj
-[385/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\p.cpp.obj
-[386/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\lm.cpp.obj
-[387/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\preactivate.cpp.obj
-[388/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\prealloc.cpp.obj
-[389/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\print.cpp.obj
-[390/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\output.cpp.obj
-[391/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\sleep.cpp.obj
-[392/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\t.cpp.obj
-[393/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\test.cpp.obj
-[394/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\rdmsr.cpp.obj
-[395/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\apic.cpp.obj
-[396/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\x.cpp.obj
-[397/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\cpuid.cpp.obj
-[398/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\wrmsr.cpp.obj
-[399/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\s.cpp.obj
-[400/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\unload.cpp.obj
-[401/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\dr.cpp.obj
-[402/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\r.cpp.obj
-[403/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\crwrite.cpp.obj
-[404/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\epthook2.cpp.obj
-[405/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\idt.cpp.obj
-[406/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\epthook.cpp.obj
-[407/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\hide.cpp.obj
-[408/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\exception.cpp.obj
-[409/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\interrupt.cpp.obj
-[410/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioapic.cpp.obj
-[411/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioin.cpp.obj
-[412/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioout.cpp.obj
-[413/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\lbrdump.cpp.obj
-[414/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\measure.cpp.obj
-[415/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\lbr.cpp.obj
-[416/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\mode.cpp.obj
-[417/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\msrread.cpp.obj
-[418/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\monitor.cpp.obj
-[419/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\msrwrite.cpp.obj
-[420/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\settings.cpp.obj
-[421/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pa2va.cpp.obj
-[422/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pcitree.cpp.obj
-[423/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pcicam.cpp.obj
-[424/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pmc.cpp.obj
-[425/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\rev.cpp.obj
-[426/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pte.cpp.obj
-[427/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\smi.cpp.obj
-[428/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pt.cpp.obj
-[429/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\trace.cpp.obj
-[430/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\track.cpp.obj
-[431/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\syscall-sysret.cpp.obj
-[432/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\tsc.cpp.obj
-[433/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\unhide.cpp.obj
-[434/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\vmcall.cpp.obj
-[435/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\xsetbv.cpp.obj
-[436/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\va2pa.cpp.obj
-[437/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\hwdbg-commands\hw.cpp.obj
-[438/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\hwdbg-commands\hw_clk.cpp.obj
-[439/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\cls.cpp.obj
-[440/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\attach.cpp.obj
-[441/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\help.cpp.obj
-[442/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\detach.cpp.obj
-[443/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\disconnect.cpp.obj
-[444/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\connect.cpp.obj
-[445/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\debug.cpp.obj
-[446/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\kill.cpp.obj
-[447/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\formats.cpp.obj
-[448/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\dump.cpp.obj
-[449/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\listen.cpp.obj
-[450/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\logclose.cpp.obj
-[451/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\logopen.cpp.obj
-[452/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\status.cpp.obj
-[453/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\restart.cpp.obj
-[454/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\pe.cpp.obj
-[455/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\pagein.cpp.obj
-[456/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\process.cpp.obj
-[457/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\switch.cpp.obj
-[458/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\namedpipe.cpp.obj
-[459/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\remote-connection.cpp.obj
-[460/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\tcpclient.cpp.obj
-[461/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\tcpserver.cpp.obj
-[462/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\start.cpp.obj
-[463/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\sympath.cpp.obj
-[464/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\break-control.cpp.obj
-[465/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\forwarding.cpp.obj
-[466/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\steppings.cpp.obj
-[467/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\script.cpp.obj
-[468/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\sym.cpp.obj
-[469/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\thread.cpp.obj
-[470/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\driver-loader\install.cpp.obj
-[471/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\callstack.cpp.obj
-[472/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\kernel-level\kd.cpp.obj
-[473/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\pci-id.cpp.obj
-[474/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\script-engine-wrapper.cpp.obj
-[475/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\readmem.cpp.obj
-[476/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\disassembler.cpp.obj
-ZYCORE_STATIC_DEFINE was renamed to ZYCORE_STATIC_BUILD.
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\include\Zycore/Defines.h(211): warning C4005: 'ZYCORE_STATIC_BUILD': macro redefinition
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\zydis\dependencies\zycore\include\Zycore/Defines.h(211): note: 'ZYCORE_STATIC_BUILD' previously declared on the command line
-ZYDIS_STATIC_DEFINE was renamed to ZYDIS_STATIC_BUILD.
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\zydis\include\Zydis/Defines.h(51): warning C4005: 'ZYDIS_STATIC_BUILD': macro redefinition
-D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\dependencies\zydis\include\Zydis/Defines.h(51): note: 'ZYDIS_STATIC_BUILD' previously declared on the command line
-[477/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\tests\tests.cpp.obj
-[478/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\kernel-level\kernel-listening.cpp.obj
-[479/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\script-engine.cpp.obj
-[480/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\transparency\transparency.cpp.obj
-[481/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\user-listening.cpp.obj
-[482/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\export\export.cpp.obj
-[483/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\hwdbg\hwdbg-scripts.cpp.obj
-[484/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\objects\objects.cpp.obj
-[485/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\pe-parser.cpp.obj
-[486/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\symbol.cpp.obj
-[487/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\ud.cpp.obj
-[488/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\rev\rev-ctrl.cpp.obj
-[489/555] Generating CXX dyndep file CMakeFiles\hyperdbg-cli.dir\CXX.dd
-[490/555] Generating CXX dyndep file CMakeFiles\epthook-demo.dir\CXX.dd
-[491/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\include\components\pe\code\pe-image-reader.cpp.obj
-[492/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\include\platform\user\code\windows-only\windows-privilege.c.obj
-[493/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\include\platform\user\code\platform-intrinsics.c.obj
-[494/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\transparency\gaussian-rng.cpp.obj
-[495/555] Linking C static library zydis_kernel.lib
-[496/555] Linking C static library Hyperhv.lib
-[497/555] Linking C static library Hyperlog.lib
-[498/555] Linking C static library Kdserial.lib
-[499/555] Linking C static library Hyperevade.lib
-[500/555] Linking C static library Hypertrace.lib
-[501/555] Linking C static library Platform.lib
-[502/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\common\Common.c.obj
-[503/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\hwdbg\hwdbg-interpreter.cpp.obj
-[504/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\broadcast\DpcRoutines.c.obj
-[505/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\pch.cpp.obj
-[506/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\broadcast\HaltedBroadcast.c.obj
-[507/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\debugger.cpp.obj
-[508/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\commands\BreakpointCommands.c.obj
-[509/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\interpreter.cpp.obj
-[510/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\commands\Callstack.c.obj
-[511/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\broadcast\HaltedRoutines.c.obj
-[512/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\common\Synchronization.c.obj
-[513/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\communication\SerialConnection.c.obj
-[514/555] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\assembler.cpp.obj
-[515/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\commands\DebuggerCommands.c.obj
-[516/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\commands\ExtensionCommands.c.obj
-[517/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\core\Debugger.c.obj
-[518/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\core\HaltedCore.c.obj
-[519/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\events\DebuggerEvents.c.obj
-[520/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\events\ApplyEvents.c.obj
-[521/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\core\DebuggerVmcalls.c.obj
-[522/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\events\Termination.c.obj
-[523/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\events\ValidateEvents.c.obj
-[524/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\meta-events\MetaDispatch.c.obj
-[525/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\memory\PoolManager.c.obj
-[526/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\memory\Allocations.c.obj
-[527/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\script-engine\ScriptEngine.c.obj
-[528/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\objects\Process.c.obj
-[529/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\meta-events\Tracing.c.obj
-[530/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\tests\KernelTests.c.obj
-[531/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\kernel-level\Kd.c.obj
-[532/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\objects\Thread.c.obj
-[533/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\user-level\Attaching.c.obj
-[534/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\user-level\UserAccess.c.obj
-[535/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\user-level\ThreadHolder.c.obj
-[536/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\driver\Driver.c.obj
-[537/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\user-level\Ud.c.obj
-[538/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\optimizations\code\AvlTree.c.obj
-[539/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\optimizations\code\InsertionSort.c.obj
-[540/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\optimizations\code\BinarySearch.c.obj
-[541/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\spinlock\code\Spinlock.c.obj
-[542/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\driver\Loader.c.obj
-[543/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\driver\Ioctl.c.obj
-[544/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\Functions.c.obj
-[545/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\optimizations\code\OptimizationsExamples.c.obj
-[546/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\PseudoRegisters.c.obj
-[547/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\Keywords.c.obj
-[548/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\Regs.c.obj
-[549/555] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\ScriptEngineEval.c.obj
-[550/555] Linking CXX static library Libhyperdbg.lib
-[551/555] Linking C executable hyperkd.sys; Signing driver with test certificate: WDKTestCert
+[46/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\sdm845.c.obj
+[47/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\spimax311.c.obj
+[48/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\uart16550.c.obj
+[49/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\usif.c.obj
+[50/339] Building C object CMakeFiles\Kdserial.dir\HyperDbg\hyperdbg\kdserial\uartio.c.obj
+[51/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\broadcast\Broadcast.c.obj
+[52/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\broadcast\DpcRoutines.c.obj
+[53/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\common\Bitwise.c.obj
+[54/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\common\Common.c.obj
+[55/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\components\registers\DebugRegisters.c.obj
+[56/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\devices\Apic.c.obj
+[57/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\devices\Pci.c.obj
+[58/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\disassembler\Disassembler.c.obj
+[59/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\features\CompatibilityChecks.c.obj
+[60/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\features\DirtyLogging.c.obj
+[61/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\disassembler\ZydisKernel.c.obj
+[62/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\globals\GlobalVariableManagement.c.obj
+[63/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\ept-hook\ModeBasedExecHook.c.obj
+[64/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\ept-hook\EptHook.c.obj
+[65/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\ept-hook\ExecTrap.c.obj
+[66/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\Callback.c.obj
+[67/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\syscall-hook\EferHook.c.obj
+[68/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\hooks\syscall-hook\SyscallCallback.c.obj
+[69/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\Configuration.c.obj
+[70/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\DirectVmcall.c.obj
+[71/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\Export.c.obj
+[72/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\Dispatch.c.obj
+[73/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\Conversion.c.obj
+[74/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\interface\HyperEvade.c.obj
+[75/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\AddressCheck.c.obj
+[76/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\Layout.c.obj
+[77/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\MemoryManager.c.obj
+[78/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\MemoryMapper.c.obj
+[79/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\Segmentation.c.obj
+[80/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\mmio\MmioShadowing.c.obj
+[81/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\memory\SwitchLayout.c.obj
+[82/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\processor\Smm.c.obj
+[83/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\ept\Invept.c.obj
+[84/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\ept\Ept.c.obj
+[85/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\processor\Idt.c.obj
+[86/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\ept\Vpid.c.obj
+[87/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Counters.c.obj
+[88/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\CrossVmcalls.c.obj
+[89/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Events.c.obj
+[90/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\CrossVmexits.c.obj
+[91/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Hv.c.obj
+[92/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\IdtEmulation.c.obj
+[93/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\ManageRegs.c.obj
+[94/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\IoHandler.c.obj
+[95/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\MsrHandlers.c.obj
+[96/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Mtf.c.obj
+[97/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\ProtectedHv.c.obj
+[98/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Vmcall.c.obj
+[99/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\VmxBroadcast.c.obj
+[100/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Vmexit.c.obj
+[101/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\optimizations\code\AvlTree.c.obj
+[102/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\VmxRegions.c.obj
+[103/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\VmxMechanisms.c.obj
+[104/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\hyperhv\code\vmm\vmx\Vmx.c.obj
+[105/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\optimizations\code\BinarySearch.c.obj
+[106/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\optimizations\code\InsertionSort.c.obj
+[107/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\spinlock\code\Spinlock.c.obj
+[108/339] Building C object CMakeFiles\Hyperhv.dir\HyperDbg\hyperdbg\include\components\optimizations\code\OptimizationsExamples.c.obj
+[109/339] Building C object CMakeFiles\Hyperevade.dir\HyperDbg\hyperdbg\hyperevade\code\SyscallFootprints.c.obj
+[110/339] Building C object CMakeFiles\Hyperevade.dir\HyperDbg\hyperdbg\hyperevade\code\Transparency.c.obj
+[111/339] Building C object CMakeFiles\Hyperevade.dir\HyperDbg\hyperdbg\hyperevade\code\VmxFootprints.c.obj
+[112/339] Building C object CMakeFiles\Hyperevade.dir\HyperDbg\hyperdbg\hyperevade\code\UnloadDll.c.obj
+[113/339] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\api\LbrApi.c.obj
+[114/339] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\api\PtApi.c.obj
+[115/339] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\api\TraceApi.c.obj
+[116/339] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\broadcast\Broadcast.c.obj
+[117/339] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\common\UnloadDll.c.obj
+[118/339] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\broadcast\DpcRoutines.c.obj
+[119/339] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\lbr\Lbr.c.obj
+[120/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformBroadcast.c.obj
+[121/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformDbg.c.obj
+[122/339] Building C object CMakeFiles\Hypertrace.dir\HyperDbg\hyperdbg\hypertrace\code\pt\Pt.c.obj
+[123/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformEvent.c.obj
+[124/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformDpc.c.obj
+[125/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformIntrinsicsVmx.c.obj
+[126/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformIntrinsics.c.obj
+[127/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformCpu.c.obj
+[128/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformIo.c.obj
+[129/339] Building ASM_MASM object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\assembly\asm-vmx-checks.asm.obj
+Microsoft (R) Macro Assembler (x64) Version 14.44.35209.0
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+MASM : warning A4018:invalid command-line option : /O2
+ Assembling: D:\ux\examples\hypedbg\HyperDbgUnified\HyperDbg\hyperdbg\libhyperdbg\code\assembly\asm-vmx-checks.asm
+[130/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformIrql.c.obj
+[131/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformMem.c.obj
+[132/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformSpinlock.c.obj
+[133/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformProcess.c.obj
+[134/339] Building C object CMakeFiles\Platform.dir\HyperDbg\hyperdbg\include\platform\kernel\code\PlatformTime.c.obj
+[135/339] Linking C static library Hyperhv.lib
+[136/339] Linking C static library Hyperlog.lib
+[137/339] Linking C static library zydis_kernel.lib
+[138/339] Linking C static library Hypertrace.lib
+[139/339] Linking C static library Kdserial.lib
+[140/339] Linking C static library Hyperevade.lib
+[141/339] Linking C static library Platform.lib
+[142/339] Building C object CMakeFiles\hyperkd.dir\cmake_pch.c.obj
+[143/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\broadcast\HaltedRoutines.c.obj
+[144/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\common\Synchronization.c.obj
+[145/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\common\Common.c.obj
+[146/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\broadcast\DpcRoutines.c.obj
+[147/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\commands\BreakpointCommands.c.obj
+[148/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\commands\Callstack.c.obj
+[149/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\broadcast\HaltedBroadcast.c.obj
+[150/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\commands\DebuggerCommands.c.obj
+[151/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\communication\SerialConnection.c.obj
+[152/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\core\DebuggerVmcalls.c.obj
+[153/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\core\Debugger.c.obj
+[154/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\commands\ExtensionCommands.c.obj
+[155/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\core\HaltedCore.c.obj
+[156/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\events\Termination.c.obj
+[157/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\events\ApplyEvents.c.obj
+[158/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\events\ValidateEvents.c.obj
+[159/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\events\DebuggerEvents.c.obj
+[160/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\memory\PoolManager.c.obj
+[161/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\memory\Allocations.c.obj
+[162/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\kernel-level\Kd.c.obj
+[163/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\meta-events\MetaDispatch.c.obj
+[164/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\objects\Process.c.obj
+[165/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\meta-events\Tracing.c.obj
+[166/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\script-engine\ScriptEngine.c.obj
+[167/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\objects\Thread.c.obj
+[168/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\user-level\Attaching.c.obj
+[169/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\tests\KernelTests.c.obj
+[170/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\user-level\ThreadHolder.c.obj
+[171/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\user-level\Ud.c.obj
+[172/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\driver\Driver.c.obj
+[173/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\debugger\user-level\UserAccess.c.obj
+[174/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\driver\Loader.c.obj
+[175/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\optimizations\code\AvlTree.c.obj
+[176/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\hyperkd\code\driver\Ioctl.c.obj
+[177/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\optimizations\code\BinarySearch.c.obj
+[178/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\optimizations\code\InsertionSort.c.obj
+[179/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\optimizations\code\OptimizationsExamples.c.obj
+[180/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\Keywords.c.obj
+[181/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\Functions.c.obj
+[182/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\PseudoRegisters.c.obj
+[183/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\Regs.c.obj
+[184/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\include\components\spinlock\code\Spinlock.c.obj
+[185/339] Building C object CMakeFiles\hyperkd.dir\HyperDbg\hyperdbg\script-eval\code\ScriptEngineEval.c.obj
+[186/339] Linking C executable hyperkd.sys; Signing driver with test certificate: WDKTestCert
 Done Adding Additional Store
 Successfully signed: D:/ux/examples/hypedbg/HyperDbgUnified/build/hyperkd.sys
-[552/555] Building CXX object CMakeFiles\epthook-demo.dir\epthook-demo.cpp.obj
-[553/555] Linking CXX executable epthook-demo.exe
-[554/555] Building CXX object CMakeFiles\hyperdbg-cli.dir\HyperDbg\hyperdbg\hyperdbg-cli\hyperdbg-cli.cpp.obj
-[555/555] Linking CXX executable hyperdbg-cli.exe
+[187/339] Building CXX object CMakeFiles\Libhyperdbg.dir\cmake_pch.cxx.obj
+D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/libhyperdbg/pch.h(111): warning C4005: 'HYPERDBG_LIBHYPERDBG': macro redefinition
+D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/libhyperdbg/pch.h(111): note: 'HYPERDBG_LIBHYPERDBG' previously declared on the command line
+[188/339] Building CXX object CMakeFiles\ScriptEvalUser.dir\cmake_pch.cxx.obj
+D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/libhyperdbg/pch.h(111): warning C4005: 'HYPERDBG_LIBHYPERDBG': macro redefinition
+D:/ux/examples/hypedbg/HyperDbgUnified/HyperDbg/hyperdbg/libhyperdbg/pch.h(111): note: 'HYPERDBG_LIBHYPERDBG' previously declared on the command line
+[189/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\common\list.cpp.obj
+[190/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\common\spinlock.cpp.obj
+[191/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\app\messaging.cpp.obj
+[192/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\app\packets.cpp.obj
+[193/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\app\libhyperdbg.cpp.obj
+[194/339] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\Functions.cpp.obj
+[195/339] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\Keywords.cpp.obj
+[196/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bc.cpp.obj
+[197/339] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\Regs.cpp.obj
+[198/339] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\PseudoRegisters.cpp.obj
+[199/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bd.cpp.obj
+[200/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\be.cpp.obj
+[201/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\continue.cpp.obj
+[202/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bl.cpp.obj
+[203/339] Building CXX object CMakeFiles\ScriptEvalUser.dir\script-eval-cpp\ScriptEngineEval.cpp.obj
+[204/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\core.cpp.obj
+[205/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\bp.cpp.obj
+[206/339] Linking CXX static library ScriptEvalUser.lib
+[207/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\d-u.cpp.obj
+[208/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\cpu.cpp.obj
+[209/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\common\common.cpp.obj
+[210/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\a.cpp.obj
+[211/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\events.cpp.obj
+[212/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\exit.cpp.obj
+[213/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\flush.cpp.obj
+[214/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\g.cpp.obj
+[215/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\gg.cpp.obj
+[216/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\gu.cpp.obj
+[217/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\dt-struct.cpp.obj
+[218/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\e.cpp.obj
+[219/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\i.cpp.obj
+[220/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\k.cpp.obj
+[221/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\eval.cpp.obj
+[222/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\load.cpp.obj
+[223/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\p.cpp.obj
+[224/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\pause.cpp.obj
+[225/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\preactivate.cpp.obj
+[226/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\lm.cpp.obj
+[227/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\print.cpp.obj
+[228/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\prealloc.cpp.obj
+[229/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\output.cpp.obj
+[230/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\rdmsr.cpp.obj
+[231/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\sleep.cpp.obj
+[232/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\t.cpp.obj
+[233/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\test.cpp.obj
+[234/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\s.cpp.obj
+[235/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\unload.cpp.obj
+[236/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\x.cpp.obj
+[237/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\r.cpp.obj
+[238/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\cpuid.cpp.obj
+[239/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\apic.cpp.obj
+[240/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\wrmsr.cpp.obj
+[241/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\dr.cpp.obj
+[242/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\crwrite.cpp.obj
+[243/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\epthook.cpp.obj
+[244/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\hide.cpp.obj
+[245/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\epthook2.cpp.obj
+[246/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\exception.cpp.obj
+[247/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\idt.cpp.obj
+[248/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioapic.cpp.obj
+[249/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\interrupt.cpp.obj
+[250/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioout.cpp.obj
+[251/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\ioin.cpp.obj
+[252/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\measure.cpp.obj
+[253/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\lbrdump.cpp.obj
+[254/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\lbr.cpp.obj
+[255/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\debugging-commands\settings.cpp.obj
+[256/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\msrread.cpp.obj
+[257/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\msrwrite.cpp.obj
+[258/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\mode.cpp.obj
+[259/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\monitor.cpp.obj
+[260/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pa2va.cpp.obj
+[261/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pcicam.cpp.obj
+[262/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pcitree.cpp.obj
+[263/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pmc.cpp.obj
+[264/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\rev.cpp.obj
+[265/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pt.cpp.obj
+[266/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\pte.cpp.obj
+[267/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\smi.cpp.obj
+[268/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\syscall-sysret.cpp.obj
+[269/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\trace.cpp.obj
+[270/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\tsc.cpp.obj
+[271/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\unhide.cpp.obj
+[272/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\track.cpp.obj
+[273/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\vmcall.cpp.obj
+[274/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\va2pa.cpp.obj
+[275/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\hwdbg-commands\hw.cpp.obj
+[276/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\hwdbg-commands\hw_clk.cpp.obj
+[277/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\extension-commands\xsetbv.cpp.obj
+[278/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\help.cpp.obj
+[279/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\attach.cpp.obj
+[280/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\detach.cpp.obj
+[281/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\cls.cpp.obj
+[282/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\disconnect.cpp.obj
+[283/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\formats.cpp.obj
+[284/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\connect.cpp.obj
+[285/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\kill.cpp.obj
+[286/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\dump.cpp.obj
+[287/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\debug.cpp.obj
+[288/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\listen.cpp.obj
+[289/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\logclose.cpp.obj
+[290/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\logopen.cpp.obj
+[291/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\pe.cpp.obj
+[292/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\restart.cpp.obj
+[293/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\process.cpp.obj
+[294/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\switch.cpp.obj
+[295/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\status.cpp.obj
+[296/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\namedpipe.cpp.obj
+[297/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\pagein.cpp.obj
+[298/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\remote-connection.cpp.obj
+[299/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\tcpclient.cpp.obj
+[300/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\tcpserver.cpp.obj
+[301/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\start.cpp.obj
+[302/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\communication\forwarding.cpp.obj
+[303/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\break-control.cpp.obj
+[304/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\sympath.cpp.obj
+[305/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\steppings.cpp.obj
+[306/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\thread.cpp.obj
+[307/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\sym.cpp.obj
+[308/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\driver-loader\install.cpp.obj
+[309/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\commands\meta-commands\script.cpp.obj
+[310/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\callstack.cpp.obj
+[311/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\pci-id.cpp.obj
+[312/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\kernel-level\kd.cpp.obj
+[313/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\disassembler.cpp.obj
+[314/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\readmem.cpp.obj
+[315/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\script-engine-wrapper.cpp.obj
+[316/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\kernel-level\kernel-listening.cpp.obj
+[317/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\script-engine.cpp.obj
+[318/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\tests\tests.cpp.obj
+[319/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\user-listening.cpp.obj
+[320/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\transparency\transparency.cpp.obj
+[321/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\export\export.cpp.obj
+[322/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\objects\objects.cpp.obj
+[323/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\hwdbg\hwdbg-scripts.cpp.obj
+[324/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\ud.cpp.obj
+[325/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\user-level\pe-parser.cpp.obj
+[326/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\rev\rev-ctrl.cpp.obj
+[327/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\transparency\gaussian-rng.cpp.obj
+[328/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\script-engine\symbol.cpp.obj
+[329/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\include\platform\user\code\platform-intrinsics.c.obj
+[330/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\include\components\pe\code\pe-image-reader.cpp.obj
+[331/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\include\platform\user\code\windows-only\windows-privilege.c.obj
+[332/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\pch.cpp.obj
+[333/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\hwdbg\hwdbg-interpreter.cpp.obj
+[334/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\debugger.cpp.obj
+[335/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\misc\assembler.cpp.obj
+[336/339] Building CXX object CMakeFiles\Libhyperdbg.dir\HyperDbg\hyperdbg\libhyperdbg\code\debugger\core\interpreter.cpp.obj
+[337/339] Linking CXX static library Libhyperdbg.lib
+[338/339] Linking CXX executable hyperdbg-cli.exe
+[339/339] Linking CXX executable epthook-demo.exe
