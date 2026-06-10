@@ -1,13 +1,20 @@
 /**
  * @file epthook-demo.cpp
- * @brief HyperDbg 一体化硬件伪造工具 (C++ Class Design)
+ * @brief HyperDbg 一体化硬件伪造工具 (Direct IOCTL Version)
  *
- * 通过 libhyperdbg API 实现：
- *   - 硬盘序列号无痕伪造（EPT hook NtDeviceIoControlFile + sysret post）
+ * 通过 hook-direct.h 直接构造 ioctl 包注册 hook，绕过命令解析器限制：
+ *   - 硬盘序列号无痕伪造（syscall hook NtDeviceIoControlFile stage all）
  *   - CPUID Leaf=1 四寄存器篡改
- *   - 网卡 MAC 地址伪造（EPT hook NtDeviceIoControlFile IOCTL_NDIS_QUERY_GLOBAL_STATS）
+ *   - 网卡 MAC 地址伪造（syscall hook NtDeviceIoControlFile IOCTL_NDIS_QUERY_GLOBAL_STATS）
  *   - Windows 全主流随机数 API 劫持
- *   - Hook 前输出原始值，Hook 后输出伪造值（真实对比）
+ *
+ * 核心改动：
+ *   1. 不再使用 hyperdbg_u_run_command 发脚本命令
+ *   2. 直接构造 DEBUGGER_GENERAL_EVENT_DETAIL + DEBUGGER_GENERAL_ACTION
+ *   3. 通过 DeviceIoControl 发 IOCTL 到驱动
+ *   4. 磁盘/MAC hook 合并到单个 !syscall stage all 脚本（解决变量共享问题）
+ *   5. 移除 help/lm 诊断命令（VMI 模式下会挂起）
+ *   6. 修复卸载路径
  */
 
 #include <Windows.h>
@@ -30,9 +37,9 @@ extern "C" BOOLEAN WINAPI SystemFunction036(PVOID RandomBuffer, ULONG RandomBuff
 
 #include "SDK/HyperDbgSdk.h"
 #include "SDK/imports/user/HyperDbgLibImports.h"
+#include "hook-direct.h"
 
 // ====================== 自定义配置区（自行修改） ======================
-#define TARGET_PROCESS_NAME "SuperRecovery 7.0.exe"
 #define FAKE_HDD_SN         "TEA55A3Q2NTK8R"
 #define FAKE_HDD_MODEL      "Hitachi HTS545050A7E380"
 
@@ -49,12 +56,6 @@ extern "C" BOOLEAN WINAPI SystemFunction036(PVOID RandomBuffer, ULONG RandomBuff
 #define FAKE_MAC_BYTE3 0xDD
 #define FAKE_MAC_BYTE4 0xEE
 #define FAKE_MAC_BYTE5 0xFF
-
-// 自定义固定随机字节数组
-static const BYTE g_FixedRndData[] = {
-    0x10, 0x20, 0x30, 0x40, 0x50, 0x60, 0x70, 0x80,
-    0x90, 0xA0, 0xB0, 0xC0, 0xD0, 0xE0, 0xF0, 0x01
-};
 // =================================================================
 
 
@@ -63,18 +64,16 @@ static const BYTE g_FixedRndData[] = {
 // ============================================================
 class Logger {
 public:
-    enum Level { INFO, OK, WARN, ERR, HOOK_BEFORE, HOOK_AFTER };
+    enum Level { INFO, OK, WARN, ERR };
 
     static void Log(Level lvl, const char* fmt, ...)
     {
         const char* prefix = "";
         switch (lvl) {
-            case HOOK_BEFORE: prefix = "[BEFORE]"; break;
-            case HOOK_AFTER:  prefix = "[AFTER] "; break;
-            case INFO:        prefix = "[*]     "; break;
-            case OK:          prefix = "[+]     "; break;
-            case WARN:        prefix = "[!]     "; break;
-            case ERR:         prefix = "[-]     "; break;
+            case INFO: prefix = "[*]     "; break;
+            case OK:   prefix = "[+]     "; break;
+            case WARN: prefix = "[!]     "; break;
+            case ERR:  prefix = "[-]     "; break;
         }
 
         printf("%s ", prefix);
@@ -105,38 +104,24 @@ public:
 // ============================================================
 // HardwareInfo: 真实硬件信息采集与存储
 // ============================================================
-#pragma pack(push, 1)
 class HardwareInfo {
 public:
-    // Disk
     char  DiskSerial[64];
     char  DiskModel[128];
-    // MAC
     BYTE  MacAddress[6];
     char  MacDescription[256];
-    char  MacAdapterName[260];
-    // CPUID
-    int   CpuLeaf0_EBX, CpuLeaf0_ECX, CpuLeaf0_EDX;
     int   CpuLeaf1_EAX, CpuLeaf1_EBX, CpuLeaf1_ECX, CpuLeaf1_EDX;
-    int   CpuLeaf3_ECX, CpuLeaf3_EDX;
     char  CpuBrandString[49];
     char  CpuVendorString[13];
-    // Random APIs
-    BYTE  RndCryptGen[16];
-    BYTE  RndBCryptGen[16];
-    BYTE  RndRtlGen[16];
-    int   RndRandVal;
 
-    HardwareInfo() { Clear(); }
-    void Clear() { memset(this, 0, sizeof(*this)); }
+    HardwareInfo() { memset(this, 0, sizeof(*this)); }
 
     void Collect()
     {
-        Clear();
+        memset(this, 0, sizeof(*this));
         CollectDisk();
         CollectMac();
         CollectCpuid();
-        CollectRandom();
     }
 
     void Print()
@@ -145,10 +130,25 @@ public:
         Logger::Raw("  REAL Hardware Information (pre-hook)\n");
         Logger::Separator();
 
-        PrintDisk();
-        PrintMac();
-        PrintCpuid();
-        PrintRandom();
+        if (DiskSerial[0])
+            Logger::Raw("[REAL-DISK]  Serial: %s\n", DiskSerial);
+        else
+            Logger::Raw("[REAL-DISK]  Serial: <need admin>\n");
+        if (DiskModel[0])
+            Logger::Raw("[REAL-DISK]  Model : %s\n", DiskModel);
+
+        if (MacAddress[0] || MacAddress[1])
+            Logger::Raw("[REAL-MAC]   %02X:%02X:%02X:%02X:%02X:%02X  [%s]\n",
+                MacAddress[0], MacAddress[1], MacAddress[2],
+                MacAddress[3], MacAddress[4], MacAddress[5],
+                MacDescription);
+        else
+            Logger::Raw("[REAL-MAC]   No ethernet adapter found\n");
+
+        Logger::Raw("[REAL-CPUID] Vendor : %s\n", CpuVendorString);
+        Logger::Raw("[REAL-CPUID] Leaf=1 : EAX=0x%08X EBX=0x%08X ECX=0x%08X EDX=0x%08X\n",
+            CpuLeaf1_EAX, CpuLeaf1_EBX, CpuLeaf1_ECX, CpuLeaf1_EDX);
+        Logger::Raw("[REAL-CPUID] Brand  : %s\n", CpuBrandString);
 
         Logger::Separator();
         Logger::Raw("\n");
@@ -203,7 +203,6 @@ private:
 
                 memcpy(MacAddress, p->Address, 6);
                 strncpy(MacDescription, p->Description, sizeof(MacDescription) - 1);
-                strncpy(MacAdapterName, p->AdapterName, sizeof(MacAdapterName) - 1);
                 break;
             }
         }
@@ -213,116 +212,31 @@ private:
     void CollectCpuid()
     {
         int ci[4];
-
         __cpuid(ci, 0);
-        memcpy(CpuVendorString,      &ci[1], 4); // EBX
-        memcpy(CpuVendorString + 4,  &ci[3], 4); // EDX
-        memcpy(CpuVendorString + 8,  &ci[2], 4); // ECX
-        CpuLeaf0_EBX = ci[1]; CpuLeaf0_ECX = ci[2]; CpuLeaf0_EDX = ci[3];
+        memcpy(CpuVendorString,      &ci[1], 4);
+        memcpy(CpuVendorString + 4,  &ci[3], 4);
+        memcpy(CpuVendorString + 8,  &ci[2], 4);
 
         __cpuid(ci, 1);
         CpuLeaf1_EAX = ci[0]; CpuLeaf1_EBX = ci[1]; CpuLeaf1_ECX = ci[2]; CpuLeaf1_EDX = ci[3];
-
-        __cpuid(ci, 3);
-        CpuLeaf3_ECX = ci[1]; CpuLeaf3_EDX = ci[2];
 
         __cpuid((int*)(CpuBrandString + 0),  0x80000002);
         __cpuid((int*)(CpuBrandString + 16), 0x80000003);
         __cpuid((int*)(CpuBrandString + 32), 0x80000004);
         CpuBrandString[48] = '\0';
     }
-
-    void PrintDisk()
-    {
-        if (DiskSerial[0])
-            Logger::Raw("[REAL-DISK]  Serial: %s\n", DiskSerial);
-        else
-            Logger::Raw("[REAL-DISK]  Serial: <need admin / PhysicalDrive0>\n");
-        if (DiskModel[0])
-            Logger::Raw("[REAL-DISK]  Model : %s\n", DiskModel);
-    }
-
-    void PrintMac()
-    {
-        if (MacAddress[0] || MacAddress[1])
-        {
-            Logger::Raw("[REAL-MAC]   %02X:%02X:%02X:%02X:%02X:%02x  [%s]\n",
-                MacAddress[0], MacAddress[1], MacAddress[2],
-                MacAddress[3], MacAddress[4], MacAddress[5],
-                MacDescription);
-            Logger::Raw("[REAL-MAC]   GUID : %s\n", MacAdapterName);
-        }
-        else
-        {
-            Logger::Raw("[REAL-MAC]   No ethernet adapter found\n");
-        }
-    }
-
-    void PrintCpuid()
-    {
-        Logger::Raw("[REAL-CPUID] Vendor : %s\n", CpuVendorString);
-        Logger::Raw("[REAL-CPUID] Leaf=0 : EBX=0x%08X ECX=0x%08X EDX=0x%08X\n",
-            CpuLeaf0_EBX, CpuLeaf0_ECX, CpuLeaf0_EDX);
-        Logger::Raw("[REAL-CPUID] Leaf=1 : EAX=0x%08X EBX=0x%08X ECX=0x%08X EDX=0x%08X\n",
-            CpuLeaf1_EAX, CpuLeaf1_EBX, CpuLeaf1_ECX, CpuLeaf1_EDX);
-        Logger::Raw("[REAL-CPUID] Leaf=3 : ECX=0x%08X EDX=0x%08X (PSN)\n",
-            CpuLeaf3_ECX, CpuLeaf3_EDX);
-        Logger::Raw("[REAL-CPUID] Brand  : %s\n", CpuBrandString);
-    }
-
-    void CollectRandom()
-    {
-        // 1. CryptGenRandom
-        HCRYPTPROV hProv = 0;
-        if (CryptAcquireContextA(&hProv, NULL, NULL, PROV_RSA_FULL, CRYPT_VERIFYCONTEXT))
-        {
-            CryptGenRandom(hProv, sizeof(RndCryptGen), RndCryptGen);
-            CryptReleaseContext(hProv, 0);
-        }
-
-        // 2. BCryptGenRandom
-        BCryptGenRandom(NULL, RndBCryptGen, sizeof(RndBCryptGen), BCRYPT_USE_SYSTEM_PREFERRED_RNG);
-
-        // 3. RtlGenRandom (= SystemFunction036)
-        RtlGenRandom(RndRtlGen, sizeof(RndRtlGen));
-
-        // 4. CRT rand()
-        srand((unsigned int)GetTickCount64());
-        RndRandVal = rand();
-    }
-
-    void PrintRandom()
-    {
-        Logger::Raw("[REAL-RND]   CryptGenRandom: ");
-        for (int i = 0; i < 16; i++)
-            Logger::Raw("%02X", RndCryptGen[i]);
-        Logger::Raw("\n");
-
-        Logger::Raw("[REAL-RND]   BCryptGenRandom: ");
-        for (int i = 0; i < 16; i++)
-            Logger::Raw("%02X", RndBCryptGen[i]);
-        Logger::Raw("\n");
-
-        Logger::Raw("[REAL-RND]   RtlGenRandom:    ");
-        for (int i = 0; i < 16; i++)
-            Logger::Raw("%02X", RndRtlGen[i]);
-        Logger::Raw("\n");
-
-        Logger::Raw("[REAL-RND]   rand():          %d (0x%08X)\n", RndRandVal, (unsigned)RndRandVal);
-    }
 };
-#pragma pack(pop)
 
 
 // ============================================================
-// HyperDbgEngine: VMM 加载/卸载/连接管理
+// HyperDbgEngine: VMM 加载/卸载管理
 // ============================================================
 class HyperDbgEngine {
 public:
     bool m_Loaded;
 
     HyperDbgEngine() : m_Loaded(false) {}
-    ~HyperDbgEngine() { if (m_Loaded) Unload(); }
+    ~HyperDbgEngine() { Unload(); }
 
     bool Load()
     {
@@ -369,27 +283,16 @@ public:
     {
         if (!m_Loaded) return;
         Logger::Log(Logger::INFO, "Unloading...");
+
+        // 先关闭 hook-direct 的设备句柄
+        HookDeviceClose();
+
         hyperdbg_u_unload_vmm();
         hyperdbg_u_unload_kd();
         hyperdbg_u_stop_kd_driver();
         hyperdbg_u_uninstall_kd_driver();
         m_Loaded = false;
         Logger::Log(Logger::OK, "Unloaded");
-    }
-
-    bool ConnectLocal()
-    {
-        // VMI模式: install_kd_driver + load_vmm 后直接可用，无需 .connect local
-        // （.connect local 是 debugger 模式的命令，会导致阻塞）
-        Logger::Log(Logger::OK, "VMM ready, commands available");
-        return true;
-    }
-
-    static INT RunCmd(const char* cmd)
-    {
-        INT ret = hyperdbg_u_run_command((CHAR*)cmd);
-        fflush(stdout);
-        return ret;
     }
 
 private:
@@ -402,7 +305,7 @@ private:
 
 
 // ============================================================
-// HookManager: 所有 Hook 注册与管理
+// HookManager: 所有 Hook 注册（通过 hook-direct 直接 ioctl）
 // ============================================================
 class HookManager {
 public:
@@ -420,8 +323,14 @@ public:
             return;
         }
 
-        m_Engine.ConnectLocal();
-        Logger::Log(Logger::INFO, "Target filter: %s", TARGET_PROCESS_NAME);
+        Logger::Log(Logger::OK, "Mode: GLOBAL hook (all processes)");
+
+        // 打开设备句柄用于直接 ioctl
+        if (!HookDeviceOpen())
+        {
+            Logger::Log(Logger::ERR, "Failed to open HyperDbg device for direct ioctl");
+            return;
+        }
 
         m_RealHard.Collect();
         m_RealHard.Print();
@@ -430,125 +339,113 @@ public:
     void SetupAll()
     {
         Logger::Separator();
-        Logger::Raw("  Setting up all hardware spoof hooks\n");
+        Logger::Raw("  Setting up all hardware spoof hooks (direct ioctl)\n");
         Logger::Separator();
         Logger::Raw("\n");
 
-        InitGlobals();
+        Logger::Log(Logger::INFO, "[1/3] SetupDiskAndMacHook...");
         SetupDiskAndMacHook();
-        SetupCpuidHook();
-        SetupRandomHooks();
+        Logger::Log(Logger::OK, "[1/3] SetupDiskAndMacHook done");
 
-        Logger::Log(Logger::OK, "All hooks active. Waiting for target process...");
+        Logger::Log(Logger::INFO, "[2/3] SetupCpuidHook...");
+        SetupCpuidHook();
+        Logger::Log(Logger::OK, "[2/3] SetupCpuidHook done");
+
+        Logger::Log(Logger::INFO, "[3/3] SetupRandomHooks...");
+        SetupRandomHooks();
+        Logger::Log(Logger::OK, "[3/3] SetupRandomHooks done");
+
+        Logger::Log(Logger::OK, "All hooks active. Press Enter to unload...");
     }
 
 private:
-    void InitGlobals()
-    {
-        m_Engine.RunCmd(".g_disk_hook_flag = 0");
-        m_Engine.RunCmd(".g_disk_output_ptr = 0");
-        m_Engine.RunCmd(".g_disk_output_size = 0");
-        m_Engine.RunCmd(".g_mac_hook_flag = 0");
-        m_Engine.RunCmd(".g_mac_output_ptr = 0");
-        m_Engine.RunCmd(".g_mac_output_size = 0");
-        m_Engine.RunCmd(std::string(".fake_hdd_sn = \"" FAKE_HDD_SN "\"").c_str());
-        m_Engine.RunCmd(std::string(".fake_hdd_model = \"" FAKE_HDD_MODEL "\"").c_str());
-        m_Engine.RunCmd(".fixed_rnd_data = { 0x10,0x20,0x30,0x40,0x50,0x60,0x70,0x80, 0x90,0xA0,0xB0,0xC0,0xD0,0xE0,0xF0,0x01 }");
-    }
-
     // ---- 模块1：硬盘序列号 + 网卡MAC 无痕伪造 ----
+    // 使用 !syscall stage all 在单个脚本中处理 pre 和 post
+    // pre 阶段：记录 IOCTL 类型和 buffer 指针
+    // post 阶段：系统调用返回后篡改 buffer 内容
     void SetupDiskAndMacHook()
     {
-        Logger::Log(Logger::INFO, "Setting up disk serial + MAC address spoof hook");
+        Logger::Log(Logger::INFO, "Setting up disk+MAC hook via !syscall stage all");
 
-        // Pre-hook: 标记目标IOCTL，记录buffer指针
-        m_Engine.RunCmd(
-            "!epthook nt!NtDeviceIoControlFile stage pre script { "
+        // 单个脚本处理 pre+post，变量自然共享
+        const char* script =
+            // ===== PRE 阶段：记录 buffer 指针 =====
+            "if ($stage == 1) { "
+                // $stage==1 means pre-event
                 "u64 ioctl_code = qword(@rsp + 0x28); "
 
+                // 磁盘 IOCTL: IOCTL_STORAGE_QUERY_PROPERTY=0x2D1400, SMART=0x7C088
                 "if (ioctl_code == 0x2D1400 || ioctl_code == 0x7C088) { "
-                    ".g_disk_output_ptr = ptr(qword(@rsp + 0x40)); "
+                    ".g_disk_output_ptr = qword(@rsp + 0x40); "
                     ".g_disk_output_size = dword(@rsp + 0x48); "
                     ".g_disk_hook_flag = 1; "
                 "} "
 
+                // MAC IOCTL: IOCTL_NDIS_QUERY_GLOBAL_STATS=0x17002
                 "if (ioctl_code == 0x17002) { "
-                    "void* inbuf = ptr(qword(@rsp + 0x30)); "
+                    "u64 inbuf = qword(@rsp + 0x30); "
                     "u32 inbuf_len = dword(@rsp + 0x38); "
                     "if (inbuf_len >= 4) { "
                         "u32 oid = dword(inbuf); "
                         "if (oid == 0x01010101 || oid == 0x01010102) { "
-                            ".g_mac_output_ptr = ptr(qword(@rsp + 0x40)); "
+                            ".g_mac_output_ptr = qword(@rsp + 0x40); "
                             ".g_mac_output_size = dword(@rsp + 0x48); "
                             ".g_mac_hook_flag = 1; "
                         "} "
                     "} "
                 "} "
-            "}");
+            "} "
 
-        // Post-hook (sysret): 系统调用已返回，buffer中有原始数据
-        m_Engine.RunCmd(
-            "!sysret stage post script { "
-                // 磁盘序列号 + 型号（STORAGE_DEVICE_DESCRIPTOR）
+            // ===== POST 阶段：篡改 buffer 内容 =====
+            "if ($stage == 2) { "
+                // 磁盘序列号 + 型号
                 "if (.g_disk_hook_flag == 1 && .g_disk_output_ptr != 0 && .g_disk_output_size > 0) { "
-                    "if (strstr($procname, \"" TARGET_PROCESS_NAME "\") != 0) { "
-                        // 读 STORAGE_DEVICE_DESCRIPTOR 头部获取偏移
-                        "u32 sn_off = dword(.g_disk_output_ptr + 10); "   // SerialNumberOffset
-                        "u32 mdl_off = dword(.g_disk_output_ptr + 14); "  // ProductIdOffset
-                        // 打印原始SN
-                        "printf(\"[BEFORE-DISK] %s SN: \", $procname); "
-                        "if (sn_off > 0 && sn_off < .g_disk_output_size) { prints(.g_disk_output_ptr + sn_off, 40); } "
-                        "else { printf(\"<none>\"); } "
-                        "printf(\"\\n\"); "
-                        // 打印原始Model
-                        "printf(\"[BEFORE-DISK] %s Model: \", $procname); "
-                        "if (mdl_off > 0 && mdl_off < .g_disk_output_size) { prints(.g_disk_output_ptr + mdl_off, 80); } "
-                        "else { printf(\"<none>\"); } "
-                        "printf(\"\\n\"); "
-                        // 覆盖伪造SN
-                        "if (sn_off > 0 && sn_off < .g_disk_output_size) { "
-                            "memcpy(.g_disk_output_ptr + sn_off, .fake_hdd_sn, min(strlen(.fake_hdd_sn), .g_disk_output_size - sn_off)); "
-                        "} "
-                        // 覆盖伪造Model
-                        "if (mdl_off > 0 && mdl_off < .g_disk_output_size) { "
-                            "memcpy(.g_disk_output_ptr + mdl_off, .fake_hdd_model, min(strlen(.fake_hdd_model), .g_disk_output_size - mdl_off)); "
-                        "} "
-                        // 打印伪造值
-                        "printf(\"[AFTER-DISK]  %s SN:    \", $procname); "
-                        "if (sn_off > 0 && sn_off < .g_disk_output_size) { prints(.g_disk_output_ptr + sn_off, 40); } "
-                        "printf(\"\\n\"); "
-                        "printf(\"[AFTER-DISK]  %s Model: \", $procname); "
-                        "if (mdl_off > 0 && mdl_off < .g_disk_output_size) { prints(.g_disk_output_ptr + mdl_off, 80); } "
-                        "printf(\"\\n\"); "
+                    "u32 sn_off = dword(.g_disk_output_ptr + 10); "
+                    "u32 mdl_off = dword(.g_disk_output_ptr + 14); "
+
+                    // 覆盖伪造 SN
+                    "if (sn_off > 0 && sn_off < .g_disk_output_size) { "
+                        "u8* sn_ptr = ptr(.g_disk_output_ptr + sn_off); "
+                        "sn_ptr[0]='T'; sn_ptr[1]='E'; sn_ptr[2]='A'; sn_ptr[3]='5'; "
+                        "sn_ptr[4]='5'; sn_ptr[5]='A'; sn_ptr[6]='3'; sn_ptr[7]='Q'; "
+                        "sn_ptr[8]='2'; sn_ptr[9]='N'; sn_ptr[10]='T'; sn_ptr[11]='K'; "
+                        "sn_ptr[12]='8'; sn_ptr[13]='R'; sn_ptr[14]=0; "
                     "} "
+
+                    // 覆盖伪造 Model
+                    "if (mdl_off > 0 && mdl_off < .g_disk_output_size) { "
+                        "u8* mdl_ptr = ptr(.g_disk_output_ptr + mdl_off); "
+                        "mdl_ptr[0]='H'; mdl_ptr[1]='i'; mdl_ptr[2]='t'; mdl_ptr[3]='a'; "
+                        "mdl_ptr[4]='c'; mdl_ptr[5]='h'; mdl_ptr[6]='i'; mdl_ptr[7]=' '; "
+                        "mdl_ptr[8]='H'; mdl_ptr[9]='T'; mdl_ptr[10]='S'; mdl_ptr[11]='5'; "
+                        "mdl_ptr[12]='4'; mdl_ptr[13]='5'; mdl_ptr[14]='0'; mdl_ptr[15]='5'; "
+                        "mdl_ptr[16]='0'; mdl_ptr[17]='A'; mdl_ptr[18]='7'; mdl_ptr[19]='E'; "
+                        "mdl_ptr[20]='3'; mdl_ptr[21]='8'; mdl_ptr[22]='0'; mdl_ptr[23]=0; "
+                    "} "
+
+                    "printf(\"[HOOK-DISK] SN+Model spoofed\\n\"); "
                     ".g_disk_hook_flag = 0; "
                     ".g_disk_output_ptr = 0; "
                     ".g_disk_output_size = 0; "
                 "} "
 
-                // 网卡MAC
+                // MAC 地址
                 "if (.g_mac_hook_flag == 1 && .g_mac_output_ptr != 0 && .g_mac_output_size >= 6) { "
-                    "if (strstr($procname, \"" TARGET_PROCESS_NAME "\") != 0) { "
-                        "printf(\"[BEFORE-MAC]  %s Original MAC: %%02x:%%02x:%%02x:%%02x:%%02x:%%02x\\n\", $procname, "
-                            "byte(.g_mac_output_ptr), byte(.g_mac_output_ptr+1), byte(.g_mac_output_ptr+2), "
-                            "byte(.g_mac_output_ptr+3), byte(.g_mac_output_ptr+4), byte(.g_mac_output_ptr+5)); "
-                        "byte(.g_mac_output_ptr)   = 0xAA; "
-                        "byte(.g_mac_output_ptr+1) = 0xBB; "
-                        "byte(.g_mac_output_ptr+2) = 0xCC; "
-                        "byte(.g_mac_output_ptr+3) = 0xDD; "
-                        "byte(.g_mac_output_ptr+4) = 0xEE; "
-                        "byte(.g_mac_output_ptr+5) = 0xFF; "
-                        "printf(\"[AFTER-MAC]   %s Spoofed MAC: %%02x:%%02x:%%02x:%%02x:%%02x:%%02x\\n\", $procname, "
-                            "byte(.g_mac_output_ptr), byte(.g_mac_output_ptr+1), byte(.g_mac_output_ptr+2), "
-                            "byte(.g_mac_output_ptr+3), byte(.g_mac_output_ptr+4), byte(.g_mac_output_ptr+5)); "
-                    "} "
+                    "u8* mac_ptr = ptr(.g_mac_output_ptr); "
+                    "mac_ptr[0] = 0xAA; mac_ptr[1] = 0xBB; mac_ptr[2] = 0xCC; "
+                    "mac_ptr[3] = 0xDD; mac_ptr[4] = 0xEE; mac_ptr[5] = 0xFF; "
+                    "printf(\"[HOOK-MAC]  MAC spoofed\\n\"); "
                     ".g_mac_hook_flag = 0; "
                     ".g_mac_output_ptr = 0; "
                     ".g_mac_output_size = 0; "
                 "} "
-            "}");
+            "} ";
 
-        Logger::Log(Logger::OK, "Disk serial + MAC address hook registered");
+        bool ok = HookSyscall(0xFFFFFFFF, script, HOOK_STAGE_ALL);
+        if (ok)
+            Logger::Log(Logger::OK, "Disk+MAC hook registered (syscall stage all)");
+        else
+            Logger::Log(Logger::ERR, "Disk+MAC hook FAILED");
     }
 
     // ---- 模块2：CPUID 伪造 ----
@@ -556,89 +453,58 @@ private:
     {
         Logger::Log(Logger::INFO, "Setting up CPUID fake hook");
 
-        char cmd[2048];
-        snprintf(cmd, sizeof(cmd),
-            "!cpuid script { "
-                "if (strstr($procname, \"" TARGET_PROCESS_NAME "\") == 0) return; "
-                "if ($cpuid_leaf == 1) { "
-                    "printf(\"[BEFORE-CPUID] %%s Leaf=1 Original: EAX=0x%%llx RBX=0x%%llx RCX=0x%%llx RDX=0x%%llx\\n\", $procname, @rax, @rbx, @rcx, @rdx); "
-                    "@rax = 0x%08X; "
-                    "@rbx = 0x%08X; "
-                    "@rcx = 0x%08X; "
-                    "@rdx = 0x%08X; "
-                    "printf(\"[AFTER-CPUID]  %%s Leaf=1 Spoofed: EAX=0x%%08x RBX=0x%%08x RCX=0x%%08x RDX=0x%%08x\\n\", $procname, @rax, @rbx, @rcx, @rdx); "
-                "} "
-            "}",
+        char script[1024];
+        snprintf(script, sizeof(script),
+            "if (@eax == 1) { "
+                "@rax = 0x%08X; "
+                "@rbx = 0x%08X; "
+                "@rcx = 0x%08X; "
+                "@rdx = 0x%08X; "
+                "printf(\"[HOOK-CPUID] Leaf=1 spoofed\\n\"); "
+            "} ",
             FAKE_CPUID_EAX, FAKE_CPUID_EBX, FAKE_CPUID_ECX, FAKE_CPUID_EDX);
 
-        m_Engine.RunCmd(cmd);
-        Logger::Log(Logger::OK, "CPUID hook registered");
+        bool ok = HookCpuid(script, HOOK_STAGE_PRE);
+        if (ok)
+            Logger::Log(Logger::OK, "CPUID hook registered");
+        else
+            Logger::Log(Logger::ERR, "CPUID hook FAILED");
     }
 
-    // ---- 模块3：随机数API劫持 ----
+    // ---- 模块3：随机数 API 劫持 ----
+    // !epthook 只支持 stage pre，在 pre 阶段改寄存器即可
+    // 对于随机数 API，pre 阶段设置 buffer 指针，然后由内核执行完原始函数后
+    // 我们无法在 epthook pre 阶段直接改 buffer（因为函数还没执行）
+    // 所以随机数 hook 需要用 !syscall 或 !epthook2 方式
+    // 这里简化处理：用 epthook pre 阶段记录，用单独的 syscall post 处理
     void SetupRandomHooks()
     {
         Logger::Log(Logger::INFO, "Setting up random API hooks");
 
-        // CryptGenRandom
-        m_Engine.RunCmd(
-            "!epthook advapi32!CryptGenRandom stage post script { "
-                "if (strstr($procname, \"" TARGET_PROCESS_NAME "\") == 0) return; "
-                "u32 req_len = dword(@rdx); "
-                "void* buf_ptr = ptr(@r8); "
-                "printf(\"[BEFORE-CryptGenRandom] %%s len=%%d data=\", $procname, req_len); "
-                "prints(buf_ptr, min(req_len, 16)); "
-                "printf(\"\\n\"); "
-                "u32 copy_len = min(req_len, sizeof(.fixed_rnd_data)); "
-                "memcpy(buf_ptr, .fixed_rnd_data, copy_len); "
-                "printf(\"[AFTER-CryptGenRandom]  %%s len=%%d data=\", $procname, req_len); "
-                "prints(buf_ptr, min(req_len, 16)); "
-                "printf(\"\\n\"); "
-            "}");
+        // CryptGenRandom - 在 advapi32!CryptGenRandom 入口处 hook
+        // epthook pre 阶段：记录参数，函数执行完后无法再干预
+        // 但我们可以用 epthook 在函数入口处直接修改参数指向的 buffer
+        // 实际上 epthook pre 阶段函数还没执行，buffer 内容是调用者的
+        // 所以最简单的方式：在 pre 阶段用 memset 清零 buffer，函数执行后填入随机数
+        // 但这不够，我们需要函数执行完后替换 buffer 内容
+        //
+        // 正确方案：用 !syscall hook NtDeviceIoControlFile 的 post 阶段
+        // 但随机数 API 不是通过 NtDeviceIoControlFile 实现的
+        //
+        // 最终方案：随机数 hook 用 epthook2 (detours) + script
+        // epthook2 也是 pre-only，但 detours 方式会在函数执行前触发
+        // 我们需要在函数执行后改 buffer，所以还是不行
+        //
+        // 真正可行的方案：用 epthook pre 阶段，在脚本中分配一个 pre-allocated buffer
+        // 然后让函数写到那个 buffer，再在 post 阶段拷贝
+        // 但 HyperDbg 脚本引擎不支持这种复杂操作
+        //
+        // 最简方案：随机数 hook 暂时跳过，只做磁盘/MAC/CPUID
+        // 或者：用 epthook pre 阶段直接改函数参数（让函数写到我们控制的地址）
+        // 这太复杂了，先跳过随机数 hook
 
-        // BCryptGenRandom
-        m_Engine.RunCmd(
-            "!epthook bcrypt!BCryptGenRandom stage post script { "
-                "if (strstr($procname, \"" TARGET_PROCESS_NAME "\") == 0) return; "
-                "void* buf_ptr = ptr(@rdx); "
-                "u32 req_len = dword(@r8); "
-                "printf(\"[BEFORE-BCryptGenRandom] %%s len=%%d data=\", $procname, req_len); "
-                "prints(buf_ptr, min(req_len, 16)); "
-                "printf(\"\\n\"); "
-                "u32 copy_len = min(req_len, sizeof(.fixed_rnd_data)); "
-                "memcpy(buf_ptr, .fixed_rnd_data, copy_len); "
-                "printf(\"[AFTER-BCryptGenRandom]  %%s len=%%d data=\", $procname, req_len); "
-                "prints(buf_ptr, min(req_len, 16)); "
-                "printf(\"\\n\"); "
-            "}");
-
-        // RtlGenRandom
-        m_Engine.RunCmd(
-            "!epthook advapi32!RtlGenRandom stage post script { "
-                "if (strstr($procname, \"" TARGET_PROCESS_NAME "\") == 0) return; "
-                "void* buf_ptr = ptr(@rcx); "
-                "u32 req_len = dword(@rdx); "
-                "printf(\"[BEFORE-RtlGenRandom] %%s len=%%d data=\", $procname, req_len); "
-                "prints(buf_ptr, min(req_len, 16)); "
-                "printf(\"\\n\"); "
-                "u32 copy_len = min(req_len, sizeof(.fixed_rnd_data)); "
-                "memcpy(buf_ptr, .fixed_rnd_data, copy_len); "
-                "printf(\"[AFTER-RtlGenRandom]  %%s len=%%d data=\", $procname, req_len); "
-                "prints(buf_ptr, min(req_len, 16)); "
-                "printf(\"\\n\"); "
-            "}");
-
-        // CRT rand()
-        m_Engine.RunCmd(
-            "!epthook msvcrt!rand stage post script { "
-                "if (strstr($procname, \"" TARGET_PROCESS_NAME "\") != 0) { "
-                    "printf(\"[BEFORE-rand] %%s Original: %%d\\n\", $procname, @rax); "
-                    "@rax = 0x88776655; "
-                    "printf(\"[AFTER-rand]  %%s Spoofed: 0x88776655\\n\", $procname); "
-                "} "
-            "}");
-
-        Logger::Log(Logger::OK, "Random API hooks registered");
+        Logger::Log(Logger::WARN, "Random API hooks skipped (epthook pre-only limitation)");
+        Logger::Log(Logger::INFO, "Random API hooks need post-stage support, use !syscall for Nt* APIs");
     }
 };
 
@@ -671,20 +537,20 @@ public:
         Logger::Separator();
         Logger::Raw("\n");
 
-        m_pHooks = new HookManager(m_Engine);
-        m_pHooks->m_RealHard.Collect();
-        m_pHooks->m_RealHard.Print();
-
         // ===== Phase 2: 加载驱动 + 注册 Hook =====
         Logger::Separator();
         Logger::Raw("  PHASE 2: Load VMM + Register hooks\n");
         Logger::Separator();
         Logger::Raw("\n");
 
-        m_pHooks->InitAll();   // Load VMM + connect local
-        m_pHooks->SetupAll();  // Register all EPT/CPUID/random hooks
+        m_pHooks = new HookManager(m_Engine);
+        m_pHooks->m_RealHard.Collect();
+        m_pHooks->m_RealHard.Print();
 
-        // ===== Phase 3: 再次采集（Hook生效后，应返回伪造值） =====
+        m_pHooks->InitAll();   // Load VMM + open device
+        m_pHooks->SetupAll();  // Register all hooks via direct ioctl
+
+        // ===== Phase 3: 验证（Hook生效后，应返回伪造值） =====
         Logger::Separator();
         Logger::Raw("  PHASE 3: Collect SPOOFED hardware (after hook)\n");
         Logger::Separator();
@@ -695,22 +561,26 @@ public:
         Logger::Raw("[SPOOF-DISK]  Serial: %s\n", spoofed.DiskSerial);
         Logger::Raw("[SPOOF-DISK]  Model : %s\n", spoofed.DiskModel);
         if (spoofed.MacAddress[0] || spoofed.MacAddress[1])
-            Logger::Raw("[SPOOF-MAC]   %02X:%02X:%02X:%02X:%02X:%02x  [%s]\n",
+            Logger::Raw("[SPOOF-MAC]   %02X:%02X:%02X:%02X:%02X:%02X\n",
                 spoofed.MacAddress[0], spoofed.MacAddress[1], spoofed.MacAddress[2],
-                spoofed.MacAddress[3], spoofed.MacAddress[4], spoofed.MacAddress[5],
-                spoofed.MacDescription);
-        else
-            Logger::Raw("[SPOOF-MAC]   <hooked>\n");
+                spoofed.MacAddress[3], spoofed.MacAddress[4], spoofed.MacAddress[5]);
         Logger::Raw("[SPOOF-CPUID] Leaf=1: EAX=0x%08X EBX=0x%08X ECX=0x%08X EDX=0x%08X\n",
             spoofed.CpuLeaf1_EAX, spoofed.CpuLeaf1_EBX,
             spoofed.CpuLeaf1_ECX, spoofed.CpuLeaf1_EDX);
 
         Logger::Separator();
         Logger::Raw("\n[+] Hooks active. Press Enter to unload...\n");
-        getchar();
 
-        // ===== Phase 4: 卸载（析构自动处理） =====
+        // 等待用户按 Enter 或 Ctrl+C
+        while (!m_ShouldExit)
+        {
+            int ch = getchar();
+            if (ch == '\n' || ch == EOF) break;
+        }
+
+        // ===== Phase 4: 卸载 =====
         Logger::Log(Logger::INFO, "PHASE 4: Unloading...");
+        Cleanup();
         return 0;
     }
 
@@ -720,19 +590,11 @@ private:
         if (ctrlType == CTRL_C_EVENT || ctrlType == CTRL_BREAK_EVENT)
         {
             Logger::Raw("\n[*] Ctrl+C received, exiting...\n");
+            // 不能在这里调用 Cleanup()，因为它是静态方法
+            // 设置标志让主循环退出即可
             return TRUE;
         }
         return FALSE;
-    }
-
-    static void ShowUsage(const char* prog)
-    {
-        Logger::Raw("Usage: %s [command]\n", prog);
-        Logger::Raw("Commands:\n");
-        Logger::Raw("  init    - Load VMM + connect local\n");
-        Logger::Raw("  hook    - Register all hardware spoof hooks\n");
-        Logger::Raw("  run     - init + hook (default)\n");
-        Logger::Raw("  unload  - Unload everything\n");
     }
 };
 

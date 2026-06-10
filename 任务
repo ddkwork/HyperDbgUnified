@@ -1,148 +1,347 @@
-// ====================== 自定义配置区（自行修改） ======================
-char .target_exe[]    = "target.exe";
-char .fake_hdd_sn[]   = "SPOOF-HDD-7721-AC69";
-u32  .fake_sn_len     = sizeof(.fake_hdd_sn);
 
-// CPUID Leaf=1 伪造四寄存器返回值
-u64 .fake_eax = 0x00000001;
-u64 .fake_rbx = 0x3927DF10;
-u64 .fake_rcx = 0x72BC5891;
-u64 .fake_rdx = 0x28FD614A;
+=============================================
+  PHASE 1: Collect REAL hardware (before hook)
 
-// 自定义固定随机字节数组，覆盖加密随机API输出
-u8 .fixed_rnd_data[] = {
-    0x10,0x20,0x30,0x40,0x50,0x60,0x70,0x80,
-    0x90,0xA0,0xB0,0xC0,0xD0,0xE0,0xF0,0x01
-};
-u32 .rnd_data_len = sizeof(.fixed_rnd_data);
-// =================================================================
+=============================================
 
-// 硬盘IOCTL临时全局缓存标记
-.global u8  .g_disk_hook_flag = 0;
-.global void* .g_disk_output_ptr = 0;
-.global u32 .g_disk_output_size = 0;
 
-// ====================== 一键初始化：加载VMM + 本地.connect连接 ======================
-function init_all()
-{
-    printf("\n[INIT] 加载VMM虚拟化模块 load vmm\n");
-    load vmm
-    printf("[INIT] 建立本地VMI调试连接 .connect local\n");
-    .connect local
-    printf("[INIT] 环境就绪，已启用全部硬件伪造钩子\n");
-    printf("[INIT] 目标过滤程序：%s\n\n", .target_exe);
-}
+=============================================
+  PHASE 2: Load VMM + Register hooks
 
-// ====================== 一键完整卸载：清钩子 + .disconnect + unload vmm ======================
-function unload_all()
-{
-    printf("\n[UNLOAD] 清除所有EPT/CPUID钩子\n");
-    !epthook off nt!NtDeviceIoControlFile
-    !cpuid off
-    !epthook off advapi32!CryptGenRandom
-    !epthook off bcrypt!BCryptGenRandom
-    !epthook off advapi32!RtlGenRandom
-    !epthook off msvcrt!rand
+=============================================
 
-    printf("[UNLOAD] 断开调试连接 .disconnect\n");
-    .disconnect
-    printf("[UNLOAD] 卸载VMM模块 unload vmm\n");
-    unload vmm
-    printf("[UNLOAD] 全部资源清理完毕，无驱动/连接残留\n\n");
-}
 
-// ====================== 模块1：硬盘序列号无痕伪造 ======================
-!epthook nt!NtDeviceIoControlFile stage pre script {
-    u64 ioctl_code = qword(@rsp + 0x28);
-    if (ioctl_code == 0x2D1400 || ioctl_code == 0x7C088)
-    {
-        .g_disk_output_ptr = ptr(qword(@rsp + 0x40));
-        .g_disk_output_size = dword(@rsp + 0x48);
-        .g_disk_hook_flag = 1;
-    }
-    else
-    {
-        .g_disk_hook_flag = 0;
-    }
-}
+=============================================
+  REAL Hardware Information (pre-hook)
 
-!sysret stage post script {
-    if (.g_disk_hook_flag == 1 && .g_disk_output_ptr != 0 && .g_disk_output_size > 0)
-    {
-        if (strstr($procname, .target_exe) != 0)
-        {
-            u32 copy_len = min(.fake_sn_len, .g_disk_output_size);
-            memcpy(.g_disk_output_ptr, .fake_hdd_sn, copy_len);
-            printf("[DISK] 进程:%s 硬盘SN已替换为 %s\n", $procname, .fake_hdd_sn);
-        }
-        .g_disk_hook_flag = 0;
-        .g_disk_output_ptr = 0;
-        .g_disk_output_size = 0;
-    }
-}
+=============================================
+[REAL-DISK]  Serial: YMA1512JA21286139C  _00000001.
+[REAL-DISK]  Model : PCIe-8 SSD 512GB
+[REAL-MAC]   No ethernet adapter found
+[REAL-CPUID] Vendor : GenuineIntel
+[REAL-CPUID] Leaf=1 : EAX=0x000806C1 EBX=0x00100800 ECX=0x7FFAFBBF EDX=0xBFEBFBFF
+[REAL-CPUID] Brand  : 11th Gen Intel(R) Core(TM) i7-1160G7 @ 1.20GHz
 
-// ====================== 模块2：标准正确CPUID钩子逻辑 ======================
-!cpuid script {
-    // 非目标程序直接放行，不做任何修改
-    if (strstr($procname, .target_exe) == 0)
-        return;
+=============================================
 
-    // $cpuid_leaf = cpuid指令执行前输入的RAX，唯一正确判断Leaf方式
-    if ($cpuid_leaf == 1)
-    {
-        // 覆盖CPU硬件计算后的4个输出寄存器
-        @rax = .fake_eax;
-        @rbx = .fake_rbx;
-        @rcx = .fake_rcx;
-        @rdx = .fake_rdx;
-        printf("[CPUID] Leaf=1 进程:%s 篡改CPU标识四寄存器\n", $procname);
-    }
-    // Leaf != 1 直接透传原始CPU数据，不干扰程序运行
-}
+[*]      Loading VMM + connecting local
+[*]      CPU vendor: GenuineIntel
+[+]      VMX supported
+[*]      Installing driver...
+[*]      Loading VMM...
+virtualization technology is vt-x
+vmx operation is supported by your processor
+vmm module is running...
+[+]      HyperDbg loaded
+[+]      Mode: GLOBAL hook (all processes)
+[hook-direct] Device opened successfully
 
-// ====================== 模块3：Windows全主流随机数API劫持 ======================
-// 1. CryptGenRandom 传统加密随机
-!epthook advapi32!CryptGenRandom stage post script {
-    if (strstr($procname, .target_exe) == 0) return;
-    u32 req_len = dword(@rdx);
-    void* buf_ptr = ptr(@r8);
-    u32 copy_len = min(req_len, .rnd_data_len);
-    memcpy(buf_ptr, .fixed_rnd_data, copy_len);
-    printf("[CryptGenRandom] %s 覆盖随机缓冲区 len=%d\n", $procname, req_len);
-}
+=============================================
+  REAL Hardware Information (pre-hook)
 
-// 2. BCryptGenRandom Win10+新标准加密随机
-!epthook bcrypt!BCryptGenRandom stage post script {
-    if (strstr($procname, .target_exe) == 0) return;
-    void* buf_ptr = ptr(@rdx);
-    u32 req_len = dword(@r8);
-    u32 copy_len = min(req_len, .rnd_data_len);
-    memcpy(buf_ptr, .fixed_rnd_data, copy_len);
-    printf("[BCryptGenRandom] %s 覆盖随机缓冲区 len=%d\n", $procname, req_len);
-}
+=============================================
+[REAL-DISK]  Serial: YMA1512JA21286139C  _00000001.
+[REAL-DISK]  Model : PCIe-8 SSD 512GB
+[REAL-MAC]   No ethernet adapter found
+[REAL-CPUID] Vendor : GenuineIntel
+[REAL-CPUID] Leaf=1 : EAX=0x000806C1 EBX=0x02100800 ECX=0xFFFAFBBF EDX=0xBFEBFBFF
+[REAL-CPUID] Brand  : 11th Gen Intel(R) Core(TM) i7-1160G7 @ 1.20GHz
 
-// 3. RtlGenRandom / SystemFunction036 快速随机
-!epthook advapi32!RtlGenRandom stage post script {
-    if (strstr($procname, .target_exe) == 0) return;
-    void* buf_ptr = ptr(@rcx);
-    u32 req_len = dword(@rdx);
-    u32 copy_len = min(req_len, .fixed_rnd_data);
-    memcpy(buf_ptr, .fixed_rnd_data, copy_len);
-    printf("[RtlGenRandom] %s 覆盖随机缓冲区\n", $procname);
-}
+=============================================
 
-// 4. CRT标准库 rand() 返回固定数值
-!epthook msvcrt!rand stage post script {
-    if (strstr($procname, .target_exe) != 0)
-    {
-        @rax = 0x88776655;
-        printf("[rand()] %s 返回固定随机值\n", $procname);
-    }
-}
 
-// ====================== 脚本加载完成提示 ======================
-printf("=============================================\n");
-printf("一体化硬件伪造脚本加载完成【全部命令官方标准】\n");
-printf("一键启动全套环境：init_all()\n");
-printf("一键完整卸载清理：unload_all()\n");
-printf("=============================================\n");
+=============================================
+  Setting up all hardware spoof hooks (direct ioctl)
+
+=============================================
+
+[*]      [1/3] SetupDiskAndMacHook...
+[*]      Setting up disk+MAC hook via !syscall stage all
+[hook-direct] Script syntax error: Line 0:
+if ($stage == 1) { u64 ioctl_code = qword(@rsp + 0x28); if (ioctl_code == 0x2D1400 || ioctl_code == 0x7C088) { .g_disk_output_ptr = qword(@rsp + 0x40); .g_disk_output_size = dword(@rsp + 0x48); .g_disk_hook_flag = 1; } if (ioctl_code == 0x17002) { u64 inbuf = qword(@rsp + 0x30); u32 inbuf_len = dword(@rsp + 0x38); if (inbuf_len >= 4) { u32 oid = dword(inbuf); if (oid == 0x01010101 || oid == 0x01010102) { .g_mac_output_ptr = qword(@rsp + 0x40); .g_mac_output_size = dword(@rsp + 0x48); .g_mac_hook_flag = 1; } } } } if ($stage == 2) { if (.g_disk_hook_flag == 1 && .g_disk_output_ptr != 0 && .g_disk_output_size > 0) { u32 sn_off = dword(.g_disk_output_ptr + 10); u32 mdl_off = dword(.g_disk_output_ptr + 14); if (sn_off > 0 && sn_off < .g_disk_output_size) { u8* sn_ptr = ptr(.g_disk_output_ptr + sn_off); sn_ptr[0]='T'; sn_ptr[1]='E'; sn_ptr[2]='A'; sn_ptr[3]='5'; sn_ptr[4]='5'; sn_ptr[5]='A'; sn_ptr[6]='3'; sn_ptr[7]='Q'; sn_ptr[8]='2'; sn_ptr[9]='N'; sn_ptr[10]='T'; sn_ptr[11]='K'; sn_ptr[12]='8'; sn_ptr[13]='R'; sn_ptr[14]=0; } if (mdl_off > 0 && mdl_off < .g_disk_output_size) { u8* mdl_ptr = ptr(.g_disk_output_ptr + mdl_off); mdl_ptr[0]='H'; mdl_ptr[1]='i'; mdl_ptr[2]='t'; mdl_ptr[3]='a'; mdl_ptr[4]='c'; mdl_ptr[5]='h'; mdl_ptr[6]='i'; mdl_ptr[7]=' '; mdl_ptr[8]='H'; mdl_ptr[9]='T'; mdl_ptr[10]='S'; mdl_ptr[11]='5'; mdl_ptr[12]='4'; mdl_ptr[13]='5'; mdl_ptr[14]='0'; mdl_ptr[15]='5'; mdl_ptr[16]='0'; mdl_ptr[17]='A'; mdl_ptr[18]='7'; mdl_ptr[19]='E'; mdl_ptr[20]='3'; mdl_ptr[21]='8'; mdl_ptr[22]='0'; mdl_ptr[23]=0; } printf("[HOOK-DISK] SN+Model spoofed\n"); .g_disk_hook_flag = 0; .g_disk_output_ptr = 0; .g_disk_output_size = 0; } if (.g_mac_hook_flag == 1 && .g_mac_output_ptr != 0 && .g_mac_output_size >= 6) { u8* mac_ptr = ptr(.g_mac_output_ptr); mac_ptr[0] = 0xAA; mac_ptr[1] = 0xBB; mac_ptr[2] = 0xCC; mac_ptr[3] = 0xDD; mac_ptr[4] = 0xEE; mac_ptr[5] = 0xFF; printf("[HOOK-MAC]  MAC spoofed\n"); .g_mac_hook_flag = 0; .g_mac_output_ptr = 0; .g_mac_output_size = 0; } }
+    ^
+Syntax Error: Invalid Syntax
+[-]      Disk+MAC hook FAILED
+[+]      [1/3] SetupDiskAndMacHook done
+[*]      [2/3] SetupCpuidHook...
+[*]      Setting up CPUID fake hook
+[+]      CPUID hook registered
+[+]      [2/3] SetupCpuidHook done
+[*]      [3/3] SetupRandomHooks...
+[*]      Setting up random API hooks
+[!]      Random API hooks skipped (epthook pre-only limitation)
+[*]      Random API hooks need post-stage support, use !syscall for Nt* APIs
+[+]      [3/3] SetupRandomHooks done
+[+]      All hooks active. Press Enter to unload...
+
+=============================================
+  PHASE 3: Collect SPOOFED hardware (after hook)
+
+=============================================
+
+[SPOOF-DISK]  Serial: YMA1512JA21286139C  _00000001.
+[SPOOF-DISK]  Model : PCIe-8 SSD 512GB
+[SPOOF-CPUID] Leaf=1: EAX=0x00000000 EBX=0x00000000 ECX=0x00000000 EDX=0x00000000
+
+=============================================
+
+[+] Hooks active. Press Enter to unload...
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed
+[HOOK-CPUID] Leaf=1 spoofed

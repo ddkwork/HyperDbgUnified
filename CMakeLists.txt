@@ -338,7 +338,7 @@ add_custom_command(TARGET hyperdbg-cli PRE_LINK
 
 # ---- EPT Hook Demo ----
 
-um_exe(epthook-demo "epthook-demo.cpp")
+um_exe(epthook-demo "epthook-demo.cpp;hook-direct.cpp")
 target_include_directories(epthook-demo PRIVATE
     "HyperDbg/hyperdbg/include"
     "HyperDbg/hyperdbg/dependencies"
