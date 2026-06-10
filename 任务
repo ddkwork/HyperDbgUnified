@@ -1,0 +1,148 @@
+// ====================== 自定义配置区（自行修改） ======================
+char .target_exe[]    = "target.exe";
+char .fake_hdd_sn[]   = "SPOOF-HDD-7721-AC69";
+u32  .fake_sn_len     = sizeof(.fake_hdd_sn);
+
+// CPUID Leaf=1 伪造四寄存器返回值
+u64 .fake_eax = 0x00000001;
+u64 .fake_rbx = 0x3927DF10;
+u64 .fake_rcx = 0x72BC5891;
+u64 .fake_rdx = 0x28FD614A;
+
+// 自定义固定随机字节数组，覆盖加密随机API输出
+u8 .fixed_rnd_data[] = {
+    0x10,0x20,0x30,0x40,0x50,0x60,0x70,0x80,
+    0x90,0xA0,0xB0,0xC0,0xD0,0xE0,0xF0,0x01
+};
+u32 .rnd_data_len = sizeof(.fixed_rnd_data);
+// =================================================================
+
+// 硬盘IOCTL临时全局缓存标记
+.global u8  .g_disk_hook_flag = 0;
+.global void* .g_disk_output_ptr = 0;
+.global u32 .g_disk_output_size = 0;
+
+// ====================== 一键初始化：加载VMM + 本地.connect连接 ======================
+function init_all()
+{
+    printf("\n[INIT] 加载VMM虚拟化模块 load vmm\n");
+    load vmm
+    printf("[INIT] 建立本地VMI调试连接 .connect local\n");
+    .connect local
+    printf("[INIT] 环境就绪，已启用全部硬件伪造钩子\n");
+    printf("[INIT] 目标过滤程序：%s\n\n", .target_exe);
+}
+
+// ====================== 一键完整卸载：清钩子 + .disconnect + unload vmm ======================
+function unload_all()
+{
+    printf("\n[UNLOAD] 清除所有EPT/CPUID钩子\n");
+    !epthook off nt!NtDeviceIoControlFile
+    !cpuid off
+    !epthook off advapi32!CryptGenRandom
+    !epthook off bcrypt!BCryptGenRandom
+    !epthook off advapi32!RtlGenRandom
+    !epthook off msvcrt!rand
+
+    printf("[UNLOAD] 断开调试连接 .disconnect\n");
+    .disconnect
+    printf("[UNLOAD] 卸载VMM模块 unload vmm\n");
+    unload vmm
+    printf("[UNLOAD] 全部资源清理完毕，无驱动/连接残留\n\n");
+}
+
+// ====================== 模块1：硬盘序列号无痕伪造 ======================
+!epthook nt!NtDeviceIoControlFile stage pre script {
+    u64 ioctl_code = qword(@rsp + 0x28);
+    if (ioctl_code == 0x2D1400 || ioctl_code == 0x7C088)
+    {
+        .g_disk_output_ptr = ptr(qword(@rsp + 0x40));
+        .g_disk_output_size = dword(@rsp + 0x48);
+        .g_disk_hook_flag = 1;
+    }
+    else
+    {
+        .g_disk_hook_flag = 0;
+    }
+}
+
+!sysret stage post script {
+    if (.g_disk_hook_flag == 1 && .g_disk_output_ptr != 0 && .g_disk_output_size > 0)
+    {
+        if (strstr($procname, .target_exe) != 0)
+        {
+            u32 copy_len = min(.fake_sn_len, .g_disk_output_size);
+            memcpy(.g_disk_output_ptr, .fake_hdd_sn, copy_len);
+            printf("[DISK] 进程:%s 硬盘SN已替换为 %s\n", $procname, .fake_hdd_sn);
+        }
+        .g_disk_hook_flag = 0;
+        .g_disk_output_ptr = 0;
+        .g_disk_output_size = 0;
+    }
+}
+
+// ====================== 模块2：标准正确CPUID钩子逻辑 ======================
+!cpuid script {
+    // 非目标程序直接放行，不做任何修改
+    if (strstr($procname, .target_exe) == 0)
+        return;
+
+    // $cpuid_leaf = cpuid指令执行前输入的RAX，唯一正确判断Leaf方式
+    if ($cpuid_leaf == 1)
+    {
+        // 覆盖CPU硬件计算后的4个输出寄存器
+        @rax = .fake_eax;
+        @rbx = .fake_rbx;
+        @rcx = .fake_rcx;
+        @rdx = .fake_rdx;
+        printf("[CPUID] Leaf=1 进程:%s 篡改CPU标识四寄存器\n", $procname);
+    }
+    // Leaf != 1 直接透传原始CPU数据，不干扰程序运行
+}
+
+// ====================== 模块3：Windows全主流随机数API劫持 ======================
+// 1. CryptGenRandom 传统加密随机
+!epthook advapi32!CryptGenRandom stage post script {
+    if (strstr($procname, .target_exe) == 0) return;
+    u32 req_len = dword(@rdx);
+    void* buf_ptr = ptr(@r8);
+    u32 copy_len = min(req_len, .rnd_data_len);
+    memcpy(buf_ptr, .fixed_rnd_data, copy_len);
+    printf("[CryptGenRandom] %s 覆盖随机缓冲区 len=%d\n", $procname, req_len);
+}
+
+// 2. BCryptGenRandom Win10+新标准加密随机
+!epthook bcrypt!BCryptGenRandom stage post script {
+    if (strstr($procname, .target_exe) == 0) return;
+    void* buf_ptr = ptr(@rdx);
+    u32 req_len = dword(@r8);
+    u32 copy_len = min(req_len, .rnd_data_len);
+    memcpy(buf_ptr, .fixed_rnd_data, copy_len);
+    printf("[BCryptGenRandom] %s 覆盖随机缓冲区 len=%d\n", $procname, req_len);
+}
+
+// 3. RtlGenRandom / SystemFunction036 快速随机
+!epthook advapi32!RtlGenRandom stage post script {
+    if (strstr($procname, .target_exe) == 0) return;
+    void* buf_ptr = ptr(@rcx);
+    u32 req_len = dword(@rdx);
+    u32 copy_len = min(req_len, .fixed_rnd_data);
+    memcpy(buf_ptr, .fixed_rnd_data, copy_len);
+    printf("[RtlGenRandom] %s 覆盖随机缓冲区\n", $procname);
+}
+
+// 4. CRT标准库 rand() 返回固定数值
+!epthook msvcrt!rand stage post script {
+    if (strstr($procname, .target_exe) != 0)
+    {
+        @rax = 0x88776655;
+        printf("[rand()] %s 返回固定随机值\n", $procname);
+    }
+}
+
+// ====================== 脚本加载完成提示 ======================
+printf("=============================================\n");
+printf("一体化硬件伪造脚本加载完成【全部命令官方标准】\n");
+printf("一键启动全套环境：init_all()\n");
+printf("一键完整卸载清理：unload_all()\n");
+printf("=============================================\n");
