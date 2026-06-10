@@ -14,7 +14,7 @@ set(CMAKE_CXX_FLAGS_RELEASE "/Zi")
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded")
 
 # C++ 标准由各目标自行通过 target_compile_options 控制
-# 避免全局 /std:c++latest 与目标级 /std:c++latest 冲突 (D9025)
+# 避免全局 与目标级 冲突 (D9025)
 
 include_directories(
     "."
@@ -169,7 +169,7 @@ target_include_directories(Pdbex PRIVATE
     "$ENV{VSINSTALLDIR}DIA SDK\\include"
 )
 target_compile_definitions(Pdbex PRIVATE _CRT_SECURE_NO_WARNINGS)
-target_compile_options(Pdbex PRIVATE /O2 /Zi /std:c++latest)
+target_compile_options(Pdbex PRIVATE /O2 /Zi)
 
 file(GLOB SymbolParserSourceFiles "HyperDbg/hyperdbg/symbol-parser/code/*.cpp")
 
@@ -183,7 +183,7 @@ target_include_directories(SymbolParser PRIVATE
     "HyperDbg/hyperdbg/dependencies/pdbex/Source"
 )
 target_compile_definitions(SymbolParser PRIVATE HYPERDBG_SYMBOL_PARSER _CRT_SECURE_NO_WARNINGS)
-target_compile_options(SymbolParser PRIVATE /O2 /Zi /std:c++latest)
+target_compile_options(SymbolParser PRIVATE /O2 /Zi)
 target_precompile_headers(SymbolParser PRIVATE "HyperDbg/hyperdbg/symbol-parser/pch.h")
 target_link_libraries(SymbolParser Pdbex)
 
@@ -240,7 +240,7 @@ target_compile_definitions(ScriptEvalUser PRIVATE
     _WIN32_WINNT=0x0601
     _CRT_SECURE_NO_WARNINGS
 )
-target_compile_options(ScriptEvalUser PRIVATE /O2 /Zi /std:c++latest)
+target_compile_options(ScriptEvalUser PRIVATE /O2 /Zi)
 target_precompile_headers(ScriptEvalUser PRIVATE "HyperDbg/hyperdbg/libhyperdbg/pch.h")
 
 um_lib(Libhyperdbg
@@ -286,7 +286,7 @@ target_compile_definitions(Libhyperdbg PRIVATE
     _WIN32_WINNT=0x0601
     _CRT_SECURE_NO_WARNINGS
 )
-target_compile_options(Libhyperdbg PRIVATE /O2 /Zi /std:c++latest)
+target_compile_options(Libhyperdbg PRIVATE /O2 /Zi)
 set_source_files_properties(${LibhyperdbgAsmFiles} PROPERTIES LANGUAGE ASM_MASM)
 target_precompile_headers(Libhyperdbg PRIVATE "HyperDbg/hyperdbg/libhyperdbg/pch.h")
 target_link_libraries(Libhyperdbg
@@ -311,7 +311,7 @@ target_compile_definitions(hyperdbg-cli PRIVATE
     HYPERDBG_DEBUG
     _CRT_SECURE_NO_WARNINGS
 )
-target_compile_options(hyperdbg-cli PRIVATE /O2 /Zi /std:c++latest)
+target_compile_options(hyperdbg-cli PRIVATE /O2 /Zi)
 target_link_options(hyperdbg-cli PRIVATE /DEBUG /FORCE:MULTIPLE
     /ALTERNATENAME:__imp_pdbex_export=pdbex_export
     /ALTERNATENAME:__imp_pdbex_set_logging_method_export=pdbex_set_logging_method_export
@@ -349,7 +349,7 @@ target_compile_definitions(epthook-demo PRIVATE
     HYPERDBG_SYMBOL_PARSER
     _CRT_SECURE_NO_WARNINGS
 )
-target_compile_options(epthook-demo PRIVATE /O2 /Zi /std:c++latest)
+target_compile_options(epthook-demo PRIVATE /O2 /Zi)
 target_link_options(epthook-demo PRIVATE /DEBUG /FORCE:MULTIPLE
     /ALTERNATENAME:__imp_pdbex_export=pdbex_export
     /ALTERNATENAME:__imp_pdbex_set_logging_method_export=pdbex_set_logging_method_export
