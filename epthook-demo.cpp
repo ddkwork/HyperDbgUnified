@@ -379,11 +379,9 @@ public:
 
     bool ConnectLocal()
     {
-        Logger::Log(Logger::INFO, "Connecting to local debug session...");
-        fflush(stdout);
-        INT ret = RunCmd(".connect local");
-        Logger::Log(Logger::INFO, "connect returned: %d", ret);
-        RunCmd("printf(\"[INIT] Environment ready\\n\");");
+        // VMI模式: install_kd_driver + load_vmm 后直接可用，无需 .connect local
+        // （.connect local 是 debugger 模式的命令，会导致阻塞）
+        Logger::Log(Logger::OK, "VMM ready, commands available");
         return true;
     }
 
