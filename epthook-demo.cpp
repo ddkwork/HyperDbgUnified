@@ -581,6 +581,7 @@ public:
         // ===== Phase 4: 卸载 =====
         Logger::Log(Logger::INFO, "PHASE 4: Unloading...");
         Cleanup();
+        getchar(); // 按 Enter 确认
         return 0;
     }
 
