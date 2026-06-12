@@ -405,22 +405,16 @@ private:
 
                     // 覆盖伪造 SN
                     "if (sn_off > 0 && sn_off < .g_disk_output_size) { "
+                        "u8 fake_sn[15] = {'T','E','5','A','5','A','3','Q','2','N','T','K','8','R',0}; "
                         "u8* sn_ptr = ptr(.g_disk_output_ptr + sn_off); "
-                        "sn_ptr[0]='T'; sn_ptr[1]='E'; sn_ptr[2]='A'; sn_ptr[3]='5'; "
-                        "sn_ptr[4]='5'; sn_ptr[5]='A'; sn_ptr[6]='3'; sn_ptr[7]='Q'; "
-                        "sn_ptr[8]='2'; sn_ptr[9]='N'; sn_ptr[10]='T'; sn_ptr[11]='K'; "
-                        "sn_ptr[12]='8'; sn_ptr[13]='R'; sn_ptr[14]=0; "
+                        "memcpy(sn_ptr, fake_sn, 15); "
                     "} "
 
                     // 覆盖伪造 Model
                     "if (mdl_off > 0 && mdl_off < .g_disk_output_size) { "
+                        "u8 fake_mdl[24] = {'H','i','t','a','c','h','i',' ','H','T','S','5','4','5','0','5','0','A','7','E','3','8','0',0}; "
                         "u8* mdl_ptr = ptr(.g_disk_output_ptr + mdl_off); "
-                        "mdl_ptr[0]='H'; mdl_ptr[1]='i'; mdl_ptr[2]='t'; mdl_ptr[3]='a'; "
-                        "mdl_ptr[4]='c'; mdl_ptr[5]='h'; mdl_ptr[6]='i'; mdl_ptr[7]=' '; "
-                        "mdl_ptr[8]='H'; mdl_ptr[9]='T'; mdl_ptr[10]='S'; mdl_ptr[11]='5'; "
-                        "mdl_ptr[12]='4'; mdl_ptr[13]='5'; mdl_ptr[14]='0'; mdl_ptr[15]='5'; "
-                        "mdl_ptr[16]='0'; mdl_ptr[17]='A'; mdl_ptr[18]='7'; mdl_ptr[19]='E'; "
-                        "mdl_ptr[20]='3'; mdl_ptr[21]='8'; mdl_ptr[22]='0'; mdl_ptr[23]=0; "
+                        "memcpy(mdl_ptr, fake_mdl, 24); "
                     "} "
 
                     "printf(\"[HOOK-DISK] SN+Model spoofed\\n\"); "
@@ -431,9 +425,9 @@ private:
 
                 // MAC 地址
                 "if (.g_mac_hook_flag == 1 && .g_mac_output_ptr != 0 && .g_mac_output_size >= 6) { "
+                    "u8 fake_mac[6] = {0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF}; "
                     "u8* mac_ptr = ptr(.g_mac_output_ptr); "
-                    "mac_ptr[0] = 0xAA; mac_ptr[1] = 0xBB; mac_ptr[2] = 0xCC; "
-                    "mac_ptr[3] = 0xDD; mac_ptr[4] = 0xEE; mac_ptr[5] = 0xFF; "
+                    "memcpy(mac_ptr, fake_mac, 6); "
                     "printf(\"[HOOK-MAC]  MAC spoofed\\n\"); "
                     ".g_mac_hook_flag = 0; "
                     ".g_mac_output_ptr = 0; "
