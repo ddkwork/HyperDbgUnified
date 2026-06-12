@@ -1,0 +1,96 @@
+
+=============================================
+  PHASE 1: Collect REAL hardware (before hook)
+
+=============================================
+
+
+=============================================
+  PHASE 2: Load VMM + Register hooks
+
+=============================================
+
+
+=============================================
+  REAL Hardware Information (pre-hook)
+
+=============================================
+[REAL-DISK]  Serial: YMA1512JA21286139C  _00000001.
+[REAL-DISK]  Model : PCIe-8 SSD 512GB
+[REAL-MAC]   No ethernet adapter found
+[REAL-CPUID] Vendor : GenuineIntel
+[REAL-CPUID] Leaf=1 : EAX=0x000806C1 EBX=0x04100800 ECX=0x7FFAFBBF EDX=0xBFEBFBFF
+[REAL-CPUID] Brand  : 11th Gen Intel(R) Core(TM) i7-1160G7 @ 1.20GHz
+
+=============================================
+
+[*]      Loading VMM + connecting local
+[*]      CPU vendor: GenuineIntel
+[+]      VMX supported
+[*]      Installing driver...
+[*]      Loading VMM...
+virtualization technology is vt-x
+vmx operation is supported by your processor
+vmm module is running...
+[+]      HyperDbg loaded
+[+]      Mode: GLOBAL hook (all processes)
+[hook-direct] Device opened successfully
+
+=============================================
+  REAL Hardware Information (pre-hook)
+
+=============================================
+[REAL-DISK]  Serial: YMA1512JA21286139C  _00000001.
+[REAL-DISK]  Model : PCIe-8 SSD 512GB
+[REAL-MAC]   No ethernet adapter found
+[REAL-CPUID] Vendor : GenuineIntel
+[REAL-CPUID] Leaf=1 : EAX=0x000806C1 EBX=0x02100800 ECX=0xFFFAFBBF EDX=0xBFEBFBFF
+[REAL-CPUID] Brand  : 11th Gen Intel(R) Core(TM) i7-1160G7 @ 1.20GHz
+
+=============================================
+
+
+=============================================
+  Setting up all hardware spoof hooks (direct ioctl)
+
+=============================================
+
+[*]      [1/3] SetupDiskAndMacHook...
+[*]      Setting up disk+MAC hook via !syscall stage all
+[hook-direct] Script syntax error: Line 0:
+if ($stage == 1) { u64 ioctl_code = qword(@rsp + 0x28); if (ioctl_code == 0x2D1400 || ioctl_code == 0x7C088) { .g_disk_output_ptr = qword(@rsp + 0x40); .g_disk_output_size = dword(@rsp + 0x48); .g_disk_hook_flag = 1; } if (ioctl_code == 0x17002) { u64 inbuf = qword(@rsp + 0x30); u32 inbuf_len = dword(@rsp + 0x38); if (inbuf_len >= 4) { u32 oid = dword(inbuf); if (oid == 0x01010101 || oid == 0x01010102) { .g_mac_output_ptr = qword(@rsp + 0x40); .g_mac_output_size = dword(@rsp + 0x48); .g_mac_hook_flag = 1; } } } } if ($stage == 2) { if (.g_disk_hook_flag == 1 && .g_disk_output_ptr != 0 && .g_disk_output_size > 0) { u32 sn_off = dword(.g_disk_output_ptr + 10); u32 mdl_off = dword(.g_disk_output_ptr + 14); if (sn_off > 0 && sn_off < .g_disk_output_size) { u8 fake_sn[15] = {'T','E','5','A','5','A','3','Q','2','N','T','K','8','R',0}; u8* sn_ptr = ptr(.g_disk_output_ptr + sn_off); memcpy(sn_ptr, fake_sn, 15); } if (mdl_off > 0 && mdl_off < .g_disk_output_size) { u8 fake_mdl[24] = {'H','i','t','a','c','h','i',' ','H','T','S','5','4','5','0','5','0','A','7','E','3','8','0',0}; u8* mdl_ptr = ptr(.g_disk_output_ptr + mdl_off); memcpy(mdl_ptr, fake_mdl, 24); } printf("[HOOK-DISK] SN+Model spoofed\n"); .g_disk_hook_flag = 0; .g_disk_output_ptr = 0; .g_disk_output_size = 0; } if (.g_mac_hook_flag == 1 && .g_mac_output_ptr != 0 && .g_mac_output_size >= 6) { u8 fake_mac[6] = {0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF}; u8* mac_ptr = ptr(.g_mac_output_ptr); memcpy(mac_ptr, fake_mac, 6); printf("[HOOK-MAC]  MAC spoofed\n"); .g_mac_hook_flag = 0; .g_mac_output_ptr = 0; .g_mac_output_size = 0; } }
+    ^
+Syntax Error: Invalid Syntax
+[-]      Disk+MAC hook FAILED
+[+]      [1/3] SetupDiskAndMacHook done
+[*]      [2/3] SetupCpuidHook...
+[*]      Setting up CPUID fake hook
+[+]      CPUID hook registered
+[+]      [2/3] SetupCpuidHook done
+[*]      [3/3] SetupRandomHooks...
+[*]      Setting up random API hooks
+[!]      Random API hooks skipped (epthook pre-only limitation)
+[*]      Random API hooks need post-stage support, use !syscall for Nt* APIs
+[+]      [3/3] SetupRandomHooks done
+[+]      All hooks active. Press Enter to unload...
+
+=============================================
+  PHASE 3: Collect SPOOFED hardware (after hook)
+
+=============================================
+
+[SPOOF-DISK]  Serial: YMA1512JA21286139C  _00000001.
+[SPOOF-DISK]  Model : PCIe-8 SSD 512GB
+[SPOOF-CPUID] Leaf=1: EAX=0x00000000 EBX=0x00000000 ECX=0x00000000 EDX=0x00000000
+
+=============================================
+
+[+] Hooks active. Press Enter to unload...
+[HOOK-CPUID] Leaf=1 spoofed
+
+[*]      PHASE 4: Unloading...
+[*]      Unloading...
+start terminating vmm...
+you're not on HyperDbg's hypervisor anymore!
+the debugger module is unloaded!
+[+]      Unloaded
