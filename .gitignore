@@ -1,7 +1,7 @@
 .idea
-/build_debug/
-/build/
-/HyperDbg/
+Debug/
+Release/
+HyperDbg/
 /HyperDbg.tar
 *.zst 
 *.exe
