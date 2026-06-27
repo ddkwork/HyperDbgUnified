@@ -581,10 +581,7 @@ public:
         // ===== Phase 4: 卸载 =====
         Logger::Log(Logger::INFO, "PHASE 4: Unloading...");
         Cleanup();
-<<<<<<< HEAD
         getchar(); // 按 Enter 确认
-=======
->>>>>>> fad9176 (feat(epthook-demo): 新增直接IOCTL钩子实现，绕过命令解析限制)
         return 0;
     }
 
